@@ -2,8 +2,6 @@ package kr.latera.sibylla.articleapi.dao
 
 import kr.latera.sibylla.articleapi.dto.ArticleDto
 import kr.latera.sibylla.articleapi.dto.ArticleInsertDto
-import org.springframework.jdbc.core.BeanPropertyRowMapper
-import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Repository
