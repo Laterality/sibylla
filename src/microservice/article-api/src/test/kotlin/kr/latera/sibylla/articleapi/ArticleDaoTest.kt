@@ -35,7 +35,8 @@ class ArticleDaoTest{
                 testArticleUid,
                 testArticleTitle,
                 testArticleContent,
-                testArticleWrittenDate
+                testArticleWrittenDate,
+                "GOOD NEWS"
         )
 
         insertedId = ArticleDao(dataSource).insert(testArticle)

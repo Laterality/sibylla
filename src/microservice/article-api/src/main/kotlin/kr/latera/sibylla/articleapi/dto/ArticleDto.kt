@@ -12,7 +12,8 @@ data class ArticleDto(var id: Long,
                       var modDate: Date)
 
 data class ArticleInsertDto(var url: String,
-                       var uid: String,
-                       var title: String,
-                       var content: String,
-                       var writtenDate: Date)
+                            var uid: String,
+                            var title: String,
+                            var content: String,
+                            var writtenDate: Date,
+                            var sourceName: String)
