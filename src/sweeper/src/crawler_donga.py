@@ -1,8 +1,10 @@
+from selenium.common.exceptions import *
 from selenium import webdriver as wd
 from datetime import datetime
 import re
 
 from Article import Article
+import util
 
 
 def extract(driver, url):
@@ -43,29 +45,48 @@ def extract(driver, url):
     )
 
 
-main_url = "http://www.donga.com/"
-driver = wd.Chrome(executable_path="../webdriver/chromedriver.exe")
+def crawl():
+    PATIENCE = 15
+    MAX_RETRY = 3
+    SOURCE_NAME = "동아일보"
+    MAIN_URL = "http://www.donga.com/"
 
-driver.implicitly_wait(10)
-driver.get(main_url)
+    driver = util.get_driver()
+    driver.set_page_load_timeout(PATIENCE)
+    driver.get(MAIN_URL)
 
-include_urls = [
-    "news.donga.com/Main",
-    "news.donga.com/MainTop"
-]
-article_links = []
+    INCLUDE_URLS = [
+        "news.donga.com/Main",
+        "news.donga.com/MainTop"
+    ]
+    article_links = []
+    timeout_cnt = 0
+    skipped_cnt = 0
 
-href_elms = driver.find_elements_by_css_selector("[href]")
+    href_elms = driver.find_elements_by_css_selector("[href]")
 
-for e in href_elms:
-    href = e.get_attribute("href")
-    for i in include_urls:
-        if i in href:
-            article_links.append(href)
-            break
+    for e in href_elms:
+        href = e.get_attribute("href")
+        for i in INCLUDE_URLS:
+            if i in href:
+                article_links.append(href)
+                break
 
-print("%d articles found" % len(article_links))
-for i in article_links:
-    print(i)
+    print("%d articles found" % len(article_links))
 
-print(extract(driver, article_links[0]))
+    for i in article_links[:10]:
+        for retry in range(0, MAX_RETRY):
+            try:
+                article = extract(driver, i)
+                util.post(article, SOURCE_NAME)
+                break
+            except (TimeoutException, NoSuchElementException, StaleElementReferenceException):
+                if retry == MAX_RETRY - 1:
+                    skipped_cnt += 1
+                else:
+                    driver.refresh()
+                    timeout_cnt += 1
+
+    driver.quit()
+
+    print("Done with %d timeouts and %d skipped pages in %d links" % (timeout_cnt, skipped_cnt, len(article_links)))
