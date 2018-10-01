@@ -93,12 +93,9 @@ def crawl():
         href = i.get_attribute("href")
         for p in article_link_patterns:
             if p in href:
-                found = False
                 try:
                     link_list.index(href)
-                    found = True
                 except ValueError:
-                    found = False
                     link_list.append(href)
                 break
 
@@ -111,7 +108,9 @@ def crawl():
                 article = extract_news(driver, i)
                 if article is not None:
                     util.post(article, SOURCE_NAME)
-                break
+                    break
+                else:
+                    continue
             except (TimeoutException, NoSuchElementException, StaleElementReferenceException):
                 if retry == MAX_RETRY - 1:
                     skipped_cnt += 1

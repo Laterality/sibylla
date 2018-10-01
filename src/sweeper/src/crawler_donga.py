@@ -74,7 +74,7 @@ def crawl():
 
     print("%d articles found" % len(article_links))
 
-    for i in article_links[:10]:
+    for i in article_links:
         for retry in range(0, MAX_RETRY):
             try:
                 article = extract(driver, i)
