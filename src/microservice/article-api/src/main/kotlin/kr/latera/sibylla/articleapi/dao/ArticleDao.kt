@@ -2,6 +2,7 @@ package kr.latera.sibylla.articleapi.dao
 
 import kr.latera.sibylla.articleapi.dto.ArticleDto
 import kr.latera.sibylla.articleapi.dto.ArticleInsertDto
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Repository
@@ -35,16 +36,20 @@ class ArticleDao(dataSource: DataSource) {
         val params = HashMap<String, Long>()
         params["articleId"] = articleId
 
-        return jdbc.queryForObject(ArticleDaoSql.SELECT_BY_ID, params) {
-            rs: ResultSet, _ -> ArticleDto(
-                rs.getLong("id"),
-                rs.getString("uid"),
-                rs.getString("title"),
-                rs.getString("content"),
-                rs.getString("url"),
-                rs.getTimestamp("written_date"),
-                rs.getTimestamp("reg_date"),
-                rs.getTimestamp("mod_date"))
+        return try {
+            jdbc.queryForObject(ArticleDaoSql.SELECT_BY_ID, params) { rs: ResultSet, _ ->
+                ArticleDto(
+                        rs.getLong("id"),
+                        rs.getString("uid"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getString("url"),
+                        rs.getTimestamp("written_date"),
+                        rs.getTimestamp("reg_date"),
+                        rs.getTimestamp("mod_date"))
+            }
+        } catch (e: EmptyResultDataAccessException) {
+            null
         }
     }
 
