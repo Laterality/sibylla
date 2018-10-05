@@ -5,10 +5,12 @@ import kr.latera.sibylla.userapi.dto.UserDto
 import kr.latera.sibylla.userapi.dto.UserInsertDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.transaction.annotation.Transactional
 import javax.sql.DataSource
 
 @Service
+@EnableTransactionManagement
 class UserServiceImpl: UserService {
 
     @Autowired
