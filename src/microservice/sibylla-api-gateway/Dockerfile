@@ -1,5 +1,6 @@
-FROM node:7.8
+FROM node:8
 
+EXPOSE 8080
 WORKDIR /usr/src/app
 
 COPY . .
