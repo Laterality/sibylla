@@ -4,7 +4,7 @@ import json
 
 
 def get_driver():
-    DRIVER_PATH = "../src/webdriver/chromedriver.exe"
+    DRIVER_PATH = "../src/webdriver/chromedriver"
 
     options = wd.ChromeOptions()
     options.add_argument("headless")
