@@ -5,11 +5,16 @@ admin:
   hostname: localhost
 apiEndpoints:
   api:
-    host: localhost
-    paths: '/ip'
+    host: altair.latera.kr
+    paths: '/api'
+  
 serviceEndpoints:
-  httpbin:
-    url: 'https://httpbin.org'
+  article-api:
+    url: 'http://localhost:8081'
+  user-api:
+    url: 'http://localhost:8082'
+  auth-api:
+    url: 'http://localhost:8083'
 policies:
   - basic-auth
   - cors
@@ -27,6 +32,9 @@ pipelines:
     # Uncomment `key-auth:` when instructed to in the Getting Started guide.
     # - key-auth:
       - proxy:
-          - action:
-              serviceEndpoint: httpbin 
-              changeOrigin: true
+          - condition:
+              name: pathExact
+              path: /article
+            action:
+              serviceEndpoint: article-api
+              changeOrigin: false
