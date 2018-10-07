@@ -8,8 +8,6 @@ RUN apt-get -y install libxss1 libgconf2-4 libappindicator1 libindicator7
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
-COPY requirements.txt ./
-COPY src ./src
-COPY webdriver ./webdriver
+COPY . .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN python src/main.py
+CMD python src/main.py
