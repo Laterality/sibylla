@@ -66,7 +66,6 @@ def crawl():
                 inclusion_filtered.append(href)
                 break
 
-
     # 링크 정제 과정
     for href in inclusion_filtered:
 
@@ -74,12 +73,9 @@ def crawl():
             href = href.split("?")[0]
 
         if href is not None:
-            found = False
             try:
                 link_list.index(href)
-                found = True
             except ValueError:
-                found = False
                 # 추가할 링크가 리스트에 없는 경우 => 중복되지 않는 경우
                 link_list.append(href)
 
@@ -97,7 +93,6 @@ def crawl():
                 else:
                     driver.refresh()
                     timeout_cnt += 1
-
 
     driver.quit()
     print("Done with %d timeouts and %d skipped pages in %d links" % (timeout_cnt, skipped_cnt, len(link_list)))

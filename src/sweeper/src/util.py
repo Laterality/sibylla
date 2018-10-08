@@ -1,13 +1,20 @@
 from selenium import webdriver as wd
 import requests
 import json
+import os
+import sys
 
 
 def get_driver():
-    DRIVER_PATH = "../src/webdriver/chromedriver"
+    DRIVER_PATH = os.environ.get("CHROME_DRIVER_PATH")
+
+    if DRIVER_PATH is None:
+        print("Invalid chrome driver path: %s" % DRIVER_PATH)
+        sys.exit(1)
 
     options = wd.ChromeOptions()
     options.add_argument("headless")
+    options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     return wd.Chrome(executable_path=DRIVER_PATH, options=options)
 
