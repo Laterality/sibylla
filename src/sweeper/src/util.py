@@ -13,7 +13,7 @@ def get_driver():
 
 
 def post(article, source_name):
-    REST_URL = "http://localhost:8080"
+    REST_URL = "http://172.18.0.4/api/article"
 
     data = {
         "title": article.title,
