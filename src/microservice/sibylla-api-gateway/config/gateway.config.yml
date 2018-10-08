@@ -5,16 +5,17 @@ admin:
   hostname: localhost
 apiEndpoints:
   api:
-    host: altair.latera.kr
-    paths: '/api'
+    host: 172.18.0.4
+    paths: 
+      - '/api*'
   
 serviceEndpoints:
-  article-api:
-    url: 'http://localhost:8081'
-  user-api:
-    url: 'http://localhost:8082'
-  auth-api:
-    url: 'http://localhost:8083'
+  article-api-svc:
+    url: 'http://172.18.0.5:8080'
+  user-api-svc:
+    url: 'http://172.18.0.6:8080'
+  auth-api-svc:
+    url: 'http://172.18.0.7:8080'
 policies:
   - basic-auth
   - cors
@@ -33,8 +34,11 @@ pipelines:
     # - key-auth:
       - proxy:
           - condition:
-              name: pathExact
-              path: /article
+              name: pathMatch
+              pattern: /api/article*
             action:
-              serviceEndpoint: article-api
+              serviceEndpoint: article-api-svc
               changeOrigin: false
+              prependPath: true
+              ignorePath: false
+              stripPath: true
