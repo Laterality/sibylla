@@ -1,8 +1,0 @@
-{
-  "name": "sibylla-api-gateway",
-  "version": "1.0.0",
-  "main": "server.js",
-  "dependencies": {
-    "express-gateway": "^1.12.1"
-  }
-}
