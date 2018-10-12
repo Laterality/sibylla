@@ -3,6 +3,7 @@ package kr.latera.sibylla.articleapi.dao
 import kr.latera.sibylla.articleapi.dto.ArticleDto
 import kr.latera.sibylla.articleapi.dto.ArticleInsertDto
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert
 import org.springframework.stereotype.Repository
@@ -19,6 +20,19 @@ class ArticleDao(dataSource: DataSource) {
             .withTableName("article")
             .usingGeneratedKeyColumns("id")
             .usingColumns("url", "uid", "title", "content", "written_date")
+
+    private val articleRowMapper = RowMapper { rs: ResultSet, _ ->
+        ArticleDto(
+                rs.getLong("id"),
+                rs.getString("uid"),
+                rs.getString("title"),
+                rs.getString("content"),
+                rs.getString("url"),
+                rs.getTimestamp("written_date"),
+                rs.getTimestamp("reg_date"),
+                rs.getTimestamp("mod_date"),
+                null)
+    }
 
     fun insert(article: ArticleInsertDto): Long {
         val params = HashMap<String, Any>()
@@ -37,20 +51,27 @@ class ArticleDao(dataSource: DataSource) {
         params["articleId"] = articleId
 
         return try {
-            jdbc.queryForObject(ArticleDaoSql.SELECT_BY_ID, params) { rs: ResultSet, _ ->
-                ArticleDto(
-                        rs.getLong("id"),
-                        rs.getString("uid"),
-                        rs.getString("title"),
-                        rs.getString("content"),
-                        rs.getString("url"),
-                        rs.getTimestamp("written_date"),
-                        rs.getTimestamp("reg_date"),
-                        rs.getTimestamp("mod_date"))
-            }
+            jdbc.queryForObject(ArticleDaoSql.SELECT_BY_ID, params, articleRowMapper)
         } catch (e: EmptyResultDataAccessException) {
             null
         }
+    }
+
+    fun selectList(limit: Int): List<ArticleDto> {
+        val params = HashMap<String, Int>()
+
+        params["limit"] = limit
+
+        return jdbc.query(ArticleDaoSql.SELECT_LIST, params, articleRowMapper)
+    }
+
+    fun selectList(limit: Int, after: Date): List<ArticleDto> {
+        val params = HashMap<String, Any>()
+
+        params["limit"] = limit
+        params["after"] = after
+
+        return jdbc.query(ArticleDaoSql.SELECT_LIST_WITH_WRITTEN_DATE, params, articleRowMapper)
     }
 
     fun deleteById(articleId: Long): Int {
@@ -59,17 +80,30 @@ class ArticleDao(dataSource: DataSource) {
 
         return jdbc.update(ArticleDaoSql.DELETE_BY_ID, params)
     }
-}
 
-class ArticleDaoSql {
-    companion object {
-        const val SELECT_BY_ID =
-                "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
-                        "FROM article\n" +
-                        "WHERE id=:articleId;"
+    class ArticleDaoSql {
+        companion object {
+            const val SELECT_BY_ID =
+                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
+                            "FROM article\n" +
+                            "WHERE id=:articleId;"
 
-        const val DELETE_BY_ID =
-                "DELETE FROM article\n" +
-                        "WHERE id=:articleId;"
+            const val SELECT_LIST =
+                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
+                            "FROM article\n" +
+                            "ORDER BY written_date DESC\n" +
+                            "LIMIT :limit;"
+
+            const val SELECT_LIST_WITH_WRITTEN_DATE =
+                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
+                            "FROM article\n" +
+                            "WHERE written_date > :after\n" +
+                            "ORDER BY written_date DESC\n" +
+                            "LIMIT :limit;"
+
+            const val DELETE_BY_ID =
+                    "DELETE FROM article\n" +
+                            "WHERE id=:articleId;"
+        }
     }
 }

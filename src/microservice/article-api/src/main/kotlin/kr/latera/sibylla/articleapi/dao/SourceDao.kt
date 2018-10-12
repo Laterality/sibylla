@@ -56,19 +56,19 @@ class SourceDao(dataSource: DataSource) {
 
         return jdbc.update(SourceDaoSql.SQL_DELETE_BY_ID, params)
     }
-}
 
-class SourceDaoSql {
-    companion object {
-        const val SQL_SELECT_BY_ID = "SELECT id, name, reg_date, mod_date\n" +
-                "FROM source\n" +
-                "WHERE id=:sourceId;"
+    class SourceDaoSql {
+        companion object {
+            const val SQL_SELECT_BY_ID = "SELECT id, name, reg_date, mod_date\n" +
+                    "FROM source\n" +
+                    "WHERE id=:sourceId;"
 
-        const val SQL_SELECT_BY_NAME = "SELECT id, name, reg_date, mod_date\n" +
-                "FROM source\n" +
-                "WHERE name=:name;"
+            const val SQL_SELECT_BY_NAME = "SELECT id, name, reg_date, mod_date\n" +
+                    "FROM source\n" +
+                    "WHERE name=:name;"
 
-        const val SQL_DELETE_BY_ID = "DELETE FROM source\n" +
-                "WHERE id=:sourceId;"
+            const val SQL_DELETE_BY_ID = "DELETE FROM source\n" +
+                    "WHERE id=:sourceId;"
+        }
     }
 }
