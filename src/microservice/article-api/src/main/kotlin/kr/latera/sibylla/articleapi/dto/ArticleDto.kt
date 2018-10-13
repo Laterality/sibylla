@@ -8,7 +8,7 @@ data class ArticleDto(var id: Long,
                       var content: String,
                       var url: String,
                       var writtenDate: Date,
-                      var sourceName: String, 
+                      var sourceName: String,
                       var regDate: Date,
                       var modDate: Date,
                       var images: List<ArticleImageDto>?)

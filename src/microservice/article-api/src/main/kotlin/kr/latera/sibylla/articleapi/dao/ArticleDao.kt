@@ -29,6 +29,7 @@ class ArticleDao(dataSource: DataSource) {
                 rs.getString("content"),
                 rs.getString("url"),
                 rs.getTimestamp("written_date"),
+                rs.getString("source_name"),
                 rs.getTimestamp("reg_date"),
                 rs.getTimestamp("mod_date"),
                 null)
@@ -89,15 +90,19 @@ class ArticleDao(dataSource: DataSource) {
                             "WHERE id=:articleId;"
 
             const val SELECT_LIST =
-                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
-                            "FROM article\n" +
+                    "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +
+                            "FROM article, source, crawled_from\n" +
+                            "WHERE crawled_from.article_id = article.id AND\n" +
+                            "crawled_from.source_id = source.id\n" +
                             "ORDER BY written_date DESC\n" +
                             "LIMIT :limit;"
 
             const val SELECT_LIST_WITH_WRITTEN_DATE =
-                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
-                            "FROM article\n" +
-                            "WHERE written_date > :after\n" +
+                    "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +
+                            "FROM article, source, crawled_from\n" +
+                            "WHERE written_date > :after AND\n" +
+                            "crawled_from.article_id = article.id AND\n" +
+                            "crawled_from.source_id = source.id\n" +
                             "ORDER BY written_date DESC\n" +
                             "LIMIT :limit;"
 
