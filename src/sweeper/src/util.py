@@ -29,6 +29,8 @@ def post(article, source_name):
         "uid": article.uid,
         "writtenDate": round(article.written_date.timestamp() * 1000),
         "sourceName": source_name
+        "sourceName": source_name,
+        "images": article.images
     }
     headers = {
         "Content-Type": "application/json; charset=utf-8"
