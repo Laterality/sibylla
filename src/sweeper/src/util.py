@@ -28,7 +28,6 @@ def post(article, source_name):
         "url": article.url,
         "uid": article.uid,
         "writtenDate": round(article.written_date.timestamp() * 1000),
-        "sourceName": source_name
         "sourceName": source_name,
         "images": article.images
     }
