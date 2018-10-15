@@ -21,6 +21,7 @@ def get_driver():
 
 def post(article, source_name):
     REST_URL = "http://172.18.0.4/api/article"
+    REST_URL = "http://altair.latera.kr/sb/api/article"
 
     data = {
         "title": article.title,
