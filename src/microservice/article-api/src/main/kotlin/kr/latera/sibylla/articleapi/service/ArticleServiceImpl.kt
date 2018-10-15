@@ -10,7 +10,6 @@ import kr.latera.sibylla.articleapi.dto.ArticleInsertDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import sun.plugin.dom.exception.InvalidStateException
 import java.util.*
 import javax.sql.DataSource
 
@@ -31,7 +30,7 @@ class ArticleServiceImpl : ArticleService {
 
         val articleImageDao = ArticleImageDao(dataSource)
         article.images?.let {
-            for (i in article.images ?: throw InvalidStateException("article's images changed to null while in loop")) {
+            for (i in article.images ?: throw Exception("article's images changed to null while in loop")) {
                 articleImageDao.insert(ArticleImageInsertDto(insertedArticleId, i))
             }
         }
