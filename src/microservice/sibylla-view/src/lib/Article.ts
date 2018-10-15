@@ -1,3 +1,5 @@
+import ArticleImage from "./ArticleImage";
+
 export default class Article {
     constructor(
         public id: number,
@@ -6,6 +8,7 @@ export default class Article {
         public sourceName: string,
         public writtenDate: Date,
         public url: string,
+        public images: Array<ArticleImage>,
     ) {
 
     }

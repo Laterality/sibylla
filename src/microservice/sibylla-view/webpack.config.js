@@ -33,4 +33,8 @@ module.exports = {
         "react-dom": "ReactDOM",
         "axios": "axios",
     },
+
+    devServer: {
+        historyApiFallback: true
+    }
 };

@@ -1,10 +1,62 @@
 import * as React from "react";
 import { Component } from "react";
+import { Cookies, withCookies } from "react-cookie";
 
-export default class HeaderComponent extends Component {
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import SwipeableViews from "react-swipeable-views";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Api from "../lib/Api";
 
+interface IHeaderComponentProps {
+    cookies: Cookies;
+}
+
+interface IHeaderComponentState {
+    signedIn: boolean;
+    signDialogOpen: boolean;
+    currentDialogIndex: number;
+}
+
+const style = {
+    signUpText: {
+        float: "right" as "right",
+        fontWeight: 700,
+        cursor: "pointer",
+    },
+    signInButton: {
+        width: "100%",
+        background: "#3e2723",
+        color: "#ffffff",
+    },
+};
+
+class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentState> {
+
+    constructor(props: any) {
+        super(props);
+
+        this.state = {
+            signedIn: false,
+            signDialogOpen: false,
+            currentDialogIndex: 0,
+        };
+
+    }
 
     render() {
+        const authToken = this.props.cookies.get("auth_token");
+
+        let profileComp;
+        if (authToken === undefined) {
+            profileComp = <button type="button" 
+                className="btn btn-login my-3 mr-3"
+                onClick={this.handleSignButtonClick}>로그인 / 회원가입</button>;
+        } else {
+            profileComp = <img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/>;
+        }
+
         return (<div id="header">
             {/* 로고 영역 */}
             <img src="./img/Logo_with_Typography.svg" alt="logo" className="logo" />
@@ -14,7 +66,92 @@ export default class HeaderComponent extends Component {
                 <input type="text" className="search-keyword-input" placeholder="기사 검색"/>
             </div>
             {/* 사용자 프로필 영역 */}
-            <img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/>
+            {profileComp}
+
+            <Dialog onClose={this.handleDialogClose} 
+                open={this.state.signDialogOpen} >
+                <DialogContent>
+                    <SwipeableViews index={this.state.currentDialogIndex} onChangeIndex={this.handleChangeDialogIndex}>
+                        <div>
+                            {/* 로그인 영역 */}
+                            <Typography variant="h5">로그인</Typography>
+                            <TextField
+                                id="input-sign-in-email"
+                                label="이메일"
+                                type="email"
+                                margin="normal"
+                                fullWidth
+                                />
+                            <TextField
+                                id="input-sign-in-password"
+                                label="비밀번호"
+                                type="password"
+                                margin="normal"
+                                fullWidth
+                                />
+                            <button style={style.signInButton}
+                                className="btn my-3"
+                                onClick={this.handleSignInButtonClick}>로그인</button>
+                            <a className="my-3"
+                                style={style.signUpText}
+                                onClick={() => this.handleChangeDialogIndex(1)}>회원가입</a>
+                        </div>
+                        <div>
+                            {/* 회원가입 영역 */}
+                            <Typography variant="h5">회원가입</Typography>
+                            <TextField
+                                id="input-sign-up-email"
+                                label="이메일"
+                                type="email"
+                                margin="normal"
+                                fullWidth
+                                />
+                            <TextField
+                                id="input-sign-up-password"
+                                label="비밀번호"
+                                type="password"
+                                margin="normal"
+                                fullWidth
+                                />
+                            <button style={style.signInButton}
+                                className="btn my-3">가입하기</button>
+                            <a className="my-3"
+                                style={style.signUpText}
+                                onClick={() => this.handleChangeDialogIndex(0)}>이전</a>
+                        </div>
+                    </SwipeableViews>
+                </DialogContent>
+            </Dialog>
         </div>);
     }
+
+    private handleDialogClose = () => {
+        this.setState({signDialogOpen: false});
+    }
+
+    private handleSignButtonClick = () => {
+        this.setState({signDialogOpen: true});
+    }
+
+    private handleChangeDialogIndex = (index: number) => {
+        this.setState({currentDialogIndex: index});
+    }
+
+    private handleSignInButtonClick = () => {
+        const signInInputEmail = document.getElementById("input-sign-in-email") as HTMLInputElement;
+        const signInInputPassword = document.getElementById("input-sign-in-password") as HTMLInputElement;
+        if (signInInputEmail === null || signInInputPassword === null) { return; }
+        const email = signInInputEmail.value;
+        const password = signInInputPassword.value;
+
+        Api.signIn(email, password)
+        .then((res) => {
+            console.log(res.data["data"]["token"]);
+            this.props.cookies.set("auth", res.data["data"]["token"]);
+            this.setState({signedIn: true});
+            console.log(this.props.cookies.get("auth"));
+        });
+    }
 }
+
+export default withCookies(HeaderComponent);
