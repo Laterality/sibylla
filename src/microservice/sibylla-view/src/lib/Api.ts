@@ -9,8 +9,7 @@ export default class Api {
     }
 
     static readonly signIn = (email: string, password: string): AxiosPromise => {
-        // return Axios.post(`${Api.BASE_URL}/auth/login`, {
-        return Axios.post(`http://localhost:8080/login`, {
+        return Axios.post(`${Api.BASE_URL}/auth/login`, {
             email,
             password,
         });
