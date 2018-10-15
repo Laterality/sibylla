@@ -7,6 +7,7 @@ import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Value
@@ -37,6 +38,7 @@ class JWTTest {
     @Value("\${public-key-path}")
     private lateinit var pubKeyPath: String
 
+    @Ignore
     @Test
     fun getKey() {
         System.out.println(privKeyPath)
