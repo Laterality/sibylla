@@ -3,6 +3,7 @@ package kr.latera.sibylla.articleapi
 import kr.latera.sibylla.articleapi.dao.ArticleDao
 import kr.latera.sibylla.articleapi.dto.ArticleInsertDto
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -27,6 +28,7 @@ class ArticleDaoTest{
     private val testArticleWrittenDate = Date()
 
     @Test
+    @Ignore
     fun doTest() {
 
         // Test insert
