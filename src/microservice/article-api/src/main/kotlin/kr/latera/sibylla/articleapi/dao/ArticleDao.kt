@@ -85,9 +85,10 @@ class ArticleDao(dataSource: DataSource) {
     class ArticleDaoSql {
         companion object {
             const val SELECT_BY_ID =
-                    "SELECT id, uid, title, content, url, written_date, reg_date, mod_date\n" +
-                            "FROM article\n" +
-                            "WHERE id=:articleId;"
+                    "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +
+                            "FROM article, source, crawled_from\n" +
+                            "WHERE crawled_from.article_id = article.id AND\n" +
+                            "id=:articleId;"
 
             const val SELECT_LIST =
                     "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +

@@ -24,7 +24,7 @@ class ArticleApiController {
         return ResponseEntity<Any>(ArticleInsertResponseDto("ok", "", insertedId), HttpStatus.CREATED)
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/by-id/{id}")
     fun retrieveArticle(@PathVariable("id") id: Long): ArticleDto? {
         return articleService.selectById(id)
     }
