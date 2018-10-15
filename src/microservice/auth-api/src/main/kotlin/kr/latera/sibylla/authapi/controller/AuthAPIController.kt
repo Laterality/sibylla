@@ -16,6 +16,7 @@ class AuthAPIController {
     @Autowired
     private lateinit var authService: AuthService
 
+    @CrossOrigin
     @PostMapping("/login")
     fun login(@RequestBody body: LoginRequestDto, request: HttpServletRequest): ResponseDto<Any> {
         val token = authService.login(body.email, body.password, request.getHeader("Origin"))
@@ -25,6 +26,7 @@ class AuthAPIController {
         return ResponseDto<Map<String, Any>>("ok", "", resMap)
     }
 
+    @CrossOrigin
     @GetMapping("/logout")
     fun logout(request: HttpServletRequest): ResponseDto<Any> {
         val authHeader = request.getHeader("Authorization")
