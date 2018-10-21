@@ -17,17 +17,30 @@ class TrainThread(threading.Thread):
 
     def run(self):
         tr.train(model, self.docs, self.labels)
-        util.set_trained(self.labes)
+        util.set_trained(self.labels)
 
 
 @app.route("/get-similarity", methods=["GET"])
 def get_similarity():
     article_1 = flask.request.args.get("article1")
     article_2 = flask.request.args.get("article2")
-    similarity = model.docvecs.similarity(int(article_1), int(article_2))
+    similarity = model.docvecs.similarity("article-%s" % article_1, "article-%s" % article_2)
     return flask.jsonify(
         result="ok",
         similarity=str(similarity)
+    )
+
+
+@app.route("/get-similarities", methods=["GET"])
+def get_similarities():
+    comparison = flask.request.args.get("article")
+    recent_article_ids = util.fetch_top_100()
+
+    similarities = [model.docvecs.similarity("article-%s" % comparison, "article-%s" % aid)
+                    for aid in recent_article_ids]
+    return flask.jsonify(
+        result="ok",
+        similarities=similarities
     )
 
 

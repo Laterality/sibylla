@@ -22,6 +22,15 @@ def fetch_untrained_data():
         return docs, ids
 
 
+def fetch_top_100():
+    query = "SELECT id FROM article ORDER BY written_date LIMIT 100;"
+    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
+        conn.execute(query)
+        result = conn.fetchall()
+        data = [c[0] for c in result]
+        return data
+
+
 def set_trained(ids):
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
         query = "update article set used_in_train=true where id=%d"

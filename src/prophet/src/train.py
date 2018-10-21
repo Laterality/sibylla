@@ -11,7 +11,7 @@ class DocIterator(object):
 
     def __iter__(self):
         for idx, doc in enumerate(self.doc_list):
-            yield gensim.models.doc2vec.TaggedDocument(doc, [self.label_list[idx]])
+            yield gensim.models.doc2vec.TaggedDocument(doc, ["article-%d" % self.label_list[idx]])
 
 
 # Train model
