@@ -6,8 +6,8 @@ import sys
 
 
 def get_driver():
-    # DRIVER_PATH = os.environ.get("CHROME_DRIVER_PATH")
-    DRIVER_PATH = "../webdriver/chromedriver.exe"
+    DRIVER_PATH = os.environ.get("CHROME_DRIVER_PATH")
+    # DRIVER_PATH = "../webdriver/chromedriver.exe"
 
     if DRIVER_PATH is None:
         print("Invalid chrome driver path: %s" % DRIVER_PATH)
