@@ -36,7 +36,7 @@ def get_similarities():
     comparison = flask.request.args.get("article")
     recent_article_ids = util.fetch_top_100()
 
-    similarities = [model.docvecs.similarity("article-%s" % comparison, "article-%s" % aid)
+    similarities = [str(model.docvecs.similarity("article-%s" % comparison, "article-%s" % aid))
                     for aid in recent_article_ids]
     return flask.jsonify(
         result="ok",
