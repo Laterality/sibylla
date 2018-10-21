@@ -40,6 +40,7 @@ def get_similarities():
                     for aid in recent_article_ids]
     return flask.jsonify(
         result="ok",
+        articleIds=recent_article_ids,
         similarities=similarities
     )
 
