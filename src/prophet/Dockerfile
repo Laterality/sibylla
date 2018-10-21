@@ -1,6 +1,7 @@
 from python:3
 
 VOLUME ./model:/usr/src/app/model
+EXPOSE 8080
 
 ENV MODEL_PATH /usr/src/app/model/article.model
 
