@@ -17,6 +17,7 @@ class TrainThread(threading.Thread):
 
     def run(self):
         tr.train(model, self.docs, self.labels)
+        util.set_trained(self.labes)
 
 
 @app.route("/get-similarity", methods=["GET"])

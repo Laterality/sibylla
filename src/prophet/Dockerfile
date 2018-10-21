@@ -1,5 +1,7 @@
 from python:3
 
+VOLUME ./model:/usr/src/app/model
+
 ENV MODEL_PATH /usr/src/app/model/article.model
 
 WORKDIR /usr/src/app
