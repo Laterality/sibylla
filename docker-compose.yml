@@ -5,6 +5,7 @@ services:
     build: ./src/microservice/sibylla-gateway
     volumes:
       - ./src/microservice/sibylla-gateway/webapp:/usr/src/www
+        ./src/microservice/sibylla-gateway/conf.d:/etc/nginx/conf.d
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.4
