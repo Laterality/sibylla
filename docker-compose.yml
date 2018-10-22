@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  api-gateway:
+    build: ./src/microservice/sibylla-gateway
+    volumes:
+      - ./src/microservice/sibylla-gatway/webapp:/usr/src/www
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.4
+  article-api:
+    build: ./src/microservice/article-api
+    volumes: 
+      - ./src/microservice/article-api:/usr/src/app
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.5
+  user-api:
+    build: ./src/microservice/user-api
+    volume:
+      - ./src/microservice/user-api:/usr/src/app
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.6
+  auth-api:
+    build: ./src/microservice/auth-api
+    volume:
+      - ./src/microservice/auth-api:/usr/src/app
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.7
+  prophet:
+    build: ./src/prophet
+    volumes:
+      - ./src/prophet:/usr/src/app
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.8
+
+networks:
+  sibylla-net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
