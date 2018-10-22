@@ -1,5 +1,5 @@
 FROM nginx
 
-COPY ./nginx.conf /etc/nginx/conf.d/
+COPY ./conf.d /etc/nginx/conf.d
 WORKDIR /usr/src/www
 COPY ./webapp .
