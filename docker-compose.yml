@@ -17,14 +17,14 @@ services:
         ipv4_address: 172.18.0.5
   user-api:
     build: ./src/microservice/user-api
-    volume:
+    volumes:
       - ./src/microservice/user-api:/usr/src/app
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.6
   auth-api:
     build: ./src/microservice/auth-api
-    volume:
+    volumes:
       - ./src/microservice/auth-api:/usr/src/app
     networks:
       sibylla-net:
