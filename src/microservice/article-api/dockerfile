@@ -1,4 +1,7 @@
 FROM openjdk:8
-COPY ./build/libs/article-api-0.0.1-SNAPSHOT.jar /usr/src/app/
-CMD java -jar /usr/src/app/article-api-0.0.1-SNAPSHOT.jar
+WORKDIR /usr/src/app
+ADD . /usr/src/app/
+RUN chmod +x gradlew
+RUN gradlew
+CMD java -jar /usr/src/app/build/libs/article-api-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
