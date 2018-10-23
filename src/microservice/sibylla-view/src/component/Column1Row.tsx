@@ -21,8 +21,8 @@ export default class Column1RowComponent extends React.Component<IColumn1RowComp
         return(<div className="column-1-article article-card row">
             <div style={img} className="article-cover col-7"></div>
             <div className="article-overview col-5 my-3">
-                <a className="article-title-anchor" href={link}>
-                    <h2>{article.title}</h2></a>
+                <ReactRouter.Link className="article-title-anchor" to={link}>
+                    <h2>{article.title}</h2></ReactRouter.Link>
                 <p>{article.content.slice(0, 300) + "..."}</p>
                 <ArticleMeta
                     sourceName={article.sourceName}

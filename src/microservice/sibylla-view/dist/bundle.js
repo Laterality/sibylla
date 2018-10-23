@@ -27262,6 +27262,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const ReactRouter = __importStar(__webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js"));
 const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "./src/component/ArticleMeta.tsx"));
 class Column1RowComponent extends React.Component {
     render() {
@@ -27273,7 +27274,7 @@ class Column1RowComponent extends React.Component {
         return (React.createElement("div", { className: "column-1-article article-card row" },
             React.createElement("div", { style: img, className: "article-cover col-7" }),
             React.createElement("div", { className: "article-overview col-5 my-3" },
-                React.createElement("a", { className: "article-title-anchor", href: link },
+                React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link },
                     React.createElement("h2", null, article.title)),
                 React.createElement("p", null, article.content.slice(0, 300) + "..."),
                 React.createElement(ArticleMeta_1.default, { sourceName: article.sourceName, writtenDate: article.writtenDate, url: article.url }))));
@@ -27305,6 +27306,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const ReactRouter = __importStar(__webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js"));
 const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "./src/component/ArticleMeta.tsx"));
 class Column2RowComponent extends React.Component {
     render() {
@@ -27321,14 +27323,14 @@ class Column2RowComponent extends React.Component {
             React.createElement("div", { className: "col-5 article-card" },
                 React.createElement("div", { className: "article-cover", style: img1 }),
                 React.createElement("div", { className: "article-overview mt-3" },
-                    React.createElement("a", { className: "article-title-anchor", href: link1 },
+                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link1 },
                         React.createElement("h2", null, article1.title)),
                     React.createElement("p", null, article1.content.slice(0, 200) + "..."),
                     React.createElement(ArticleMeta_1.default, { sourceName: article1.sourceName, writtenDate: article1.writtenDate, url: article1.url }))),
             React.createElement("div", { className: "article-card col-5" },
                 React.createElement("div", { className: "article-cover", style: img2 }),
                 React.createElement("div", { className: "article-overview mt-3" },
-                    React.createElement("a", { className: "article-title-anchor", href: link2 },
+                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link2 },
                         React.createElement("h2", null, article2.title)),
                     React.createElement("p", null, article2.content.slice(0, 200) + "..."),
                     React.createElement(ArticleMeta_1.default, { sourceName: article2.sourceName, writtenDate: article2.writtenDate, url: article2.url })))));
