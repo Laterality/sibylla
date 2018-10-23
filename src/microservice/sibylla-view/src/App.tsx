@@ -31,8 +31,10 @@ export default class App extends React.Component {
         <CookiesProvider>
             <MuiThemeProvider theme={theme}>
                 <ReactRouter.BrowserRouter>
-                    <ReactRouter.Route exact path="/" component={Home}/>
-                    <ReactRouter.Route path="/article" component={ArticleContent} />
+                    <div>
+                        <ReactRouter.Route exact path="/" component={Home}/>
+                        <ReactRouter.Route path="/article" component={ArticleContent} />
+                    </div>
                 </ReactRouter.BrowserRouter>
             </MuiThemeProvider>
         </CookiesProvider>);
