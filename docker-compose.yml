@@ -27,6 +27,7 @@ services:
     build: ./src/microservice/auth-api
     volumes:
       - ./src/microservice/auth-api:/usr/src/app
+      - ./src/certs:/usr/src/certs
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.7
