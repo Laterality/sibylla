@@ -32,7 +32,7 @@ export default class App extends React.Component {
             <MuiThemeProvider theme={theme}>
                 <ReactRouter.BrowserRouter>
                     <ReactRouter.Switch>
-                        <ReactRouter.Route path="/" component={Home}/>
+                        <ReactRouter.Route exact path="/" component={Home}/>
                         <ReactRouter.Route path="/article" component={ArticleContent} />
                     </ReactRouter.Switch>
                 </ReactRouter.BrowserRouter>

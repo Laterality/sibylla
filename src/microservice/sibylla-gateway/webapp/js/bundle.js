@@ -27190,7 +27190,7 @@ class App extends React.Component {
             React.createElement(styles_1.MuiThemeProvider, { theme: theme },
                 React.createElement(ReactRouter.BrowserRouter, null,
                     React.createElement(ReactRouter.Switch, null,
-                        React.createElement(ReactRouter.Route, { path: "/", component: Home_1.default }),
+                        React.createElement(ReactRouter.Route, { exact: true, path: "/", component: Home_1.default }),
                         React.createElement(ReactRouter.Route, { path: "/article", component: ArticleContent_1.default }))))));
     }
 }
