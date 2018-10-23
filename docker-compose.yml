@@ -12,21 +12,21 @@ services:
   article-api:
     build: ./src/microservice/article-api
     volumes: 
-      - ./src/microservice/article-api/build/libs:/usr/src/app
+      - ./src/microservice/article-api:/usr/src/app
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.5
   user-api:
     build: ./src/microservice/user-api
     volumes:
-      - ./src/microservice/user-api/build/libs:/usr/src/app
+      - ./src/microservice/user-api:/usr/src/app
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.6
   auth-api:
     build: ./src/microservice/auth-api
     volumes:
-      - ./src/microservice/auth-api/build/libs:/usr/src/app
+      - ./src/microservice/auth-api:/usr/src/app
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.7

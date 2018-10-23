@@ -1,7 +1,4 @@
 FROM openjdk:8
 WORKDIR /usr/src/app
-ADD . /usr/src/app
-RUN chmod +x gradlew
-RUN ./gradlew
-CMD java -jar /usr/src/app/user-api-0.0.1-SNAPSHOT.jar
+CMD ./start.sh
 EXPOSE 8080
