@@ -5,6 +5,7 @@ import kr.latera.sibylla.articleapi.retrofit.dto.ArticleSimilarityPair
 import kr.latera.sibylla.articleapi.retrofit.dto.GetSimilaritiesResponseDto
 import kr.latera.sibylla.articleapi.retrofit.service.ProphetService
 import kr.latera.sibylla.articleapi.service.*
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -21,9 +22,12 @@ import kotlin.streams.toList
 @RequestMapping("/")
 class ArticleApiController {
 
-    private val articleService: ArticleService = ArticleServiceImpl()
-    private val readService: ReadService = ReadServiceImpl()
-    private val authTokenService: AuthTokenService = AuthTokenServiceImpl()
+    @Autowired
+    private lateinit var articleService: ArticleService
+    @Autowired
+    private lateinit var readService: ReadService
+    @Autowired
+    private lateinit var authTokenService: AuthTokenService
 
     @PostMapping
     fun registerArticle(@RequestBody body: ArticleInsertDto): Any {
@@ -88,8 +92,8 @@ class ArticleApiController {
 
         return ResponseDto("ok",
                 "",
-                similarities.subList(0,
-                        if (similarities.size > 100 ) { 100 } else { similarities.size -1 }))
+                sorted.subList(0,
+                        if (sorted.size > 100 ) { 100 } else { sorted.size -1 }))
     }
 
     @PostMapping("/read")
