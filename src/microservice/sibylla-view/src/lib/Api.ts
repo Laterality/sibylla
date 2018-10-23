@@ -2,7 +2,7 @@ import { default as Axios, AxiosPromise } from "axios";
 
 export default class Api {
 
-    private static readonly BASE_URL = "http://altair.latera.kr/sibylla/api";
+    private static readonly BASE_URL = "http://altair.latera.kr/sb/api";
 
     static readonly retrieveArticles = (limit = 20): AxiosPromise => {
         return Axios.get(`${Api.BASE_URL}/article/list?limit=${limit}`);
