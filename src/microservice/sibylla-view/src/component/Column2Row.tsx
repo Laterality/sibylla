@@ -13,8 +13,8 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
 
     render() {
         const { article1, article2 } = this.props;
-        const link1 = `/article?id=${article1.id}`;
-        const link2 = `/article?id=${article2.id}`;
+        const link1 = `./article?id=${article1.id}`;
+        const link2 = `./article?id=${article2.id}`;
         const img1 = {
             backgroundImage: `url(${article1.images[0].src})`
         }
@@ -40,7 +40,7 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
             <div className="article-card col-5">
             <div className="article-cover" style={img2}></div>
                 <div className="article-overview mt-3">
-                    <a className="article-title-anchor" href={link1}>
+                    <a className="article-title-anchor" href={link2}>
                         <h2>{article2.title}</h2>
                     </a>
                     <p>{article2.content.slice(0, 200) + "..."}</p>

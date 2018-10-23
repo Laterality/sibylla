@@ -13,7 +13,7 @@ export default class Column1RowComponent extends React.Component<IColumn1RowComp
 
     render() {
         const { article } = this.props;
-        const link = `/article?id=${article.id}`;
+        const link = `./article?id=${article.id}`;
 
         const img = {
             backgroundImage: "url(" + article.images[0].src + ")"

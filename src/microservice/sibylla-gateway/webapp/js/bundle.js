@@ -27266,7 +27266,7 @@ const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "
 class Column1RowComponent extends React.Component {
     render() {
         const { article } = this.props;
-        const link = `/article?id=${article.id}`;
+        const link = `./article?id=${article.id}`;
         const img = {
             backgroundImage: "url(" + article.images[0].src + ")"
         };
@@ -27309,8 +27309,8 @@ const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "
 class Column2RowComponent extends React.Component {
     render() {
         const { article1, article2 } = this.props;
-        const link1 = `/article?id=${article1.id}`;
-        const link2 = `/article?id=${article2.id}`;
+        const link1 = `./article?id=${article1.id}`;
+        const link2 = `./article?id=${article2.id}`;
         const img1 = {
             backgroundImage: `url(${article1.images[0].src})`
         };
@@ -27328,7 +27328,7 @@ class Column2RowComponent extends React.Component {
             React.createElement("div", { className: "article-card col-5" },
                 React.createElement("div", { className: "article-cover", style: img2 }),
                 React.createElement("div", { className: "article-overview mt-3" },
-                    React.createElement("a", { className: "article-title-anchor", href: link1 },
+                    React.createElement("a", { className: "article-title-anchor", href: link2 },
                         React.createElement("h2", null, article2.title)),
                     React.createElement("p", null, article2.content.slice(0, 200) + "..."),
                     React.createElement(ArticleMeta_1.default, { sourceName: article2.sourceName, writtenDate: article2.writtenDate, url: article2.url })))));
