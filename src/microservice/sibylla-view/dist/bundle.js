@@ -27610,6 +27610,12 @@ const React = __importStar(__webpack_require__(/*! react */ "react"));
 const qs = __importStar(__webpack_require__(/*! querystring */ "./C:/Users/Jinwoo Shin/AppData/Roaming/npm/node_modules/webpack/node_modules/querystring-es3/index.js"));
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
+const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
+const style = {
+    content: {
+        whiteSpace: "pre-wrap",
+    }
+};
 class ArticleContentPageComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -27636,16 +27642,18 @@ class ArticleContentPageComponent extends React.Component {
         const dspMonthDay = now.getUTCMonth() !== writtenDate.getUTCMonth() ||
             now.getUTCDate() !== writtenDate.getUTCDate();
         const writtenDateStr = `${dspYear ? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay ? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
-        return (React.createElement("div", { className: "article-list-item" },
-            React.createElement("h2", null, article.title),
-            React.createElement("div", { className: "article-meta" },
-                React.createElement("img", { src: "./img/joongang_logo_circle.png" }),
-                React.createElement("h6", null, article.sourceName),
-                React.createElement("h6", null,
-                    "| ",
-                    writtenDateStr),
-                React.createElement("a", { href: article.url, className: "goto-source" }, "\uC6D0\uBB38 \uBCF4\uAE30")),
-            React.createElement("p", null, article.content)));
+        return (React.createElement("div", null,
+            React.createElement(Header_1.default, null),
+            React.createElement("div", { id: "content" },
+                React.createElement("h2", { className: "my-3" }, article.title),
+                React.createElement("div", { className: "article-meta" },
+                    React.createElement("img", { src: "./img/joongang_logo_circle.png" }),
+                    React.createElement("h6", null, article.sourceName),
+                    React.createElement("h6", null,
+                        "| ",
+                        writtenDateStr),
+                    React.createElement("a", { href: article.url, className: "goto-source" }, "\uC6D0\uBB38 \uBCF4\uAE30")),
+                React.createElement("p", { className: "my-3", style: style.content }, article.content))));
     }
 }
 exports.default = ArticleContentPageComponent;
@@ -27686,10 +27694,7 @@ class HomePageComponent extends React.Component {
         };
     }
     render() {
-        const style = {
-            background: "#fafafa",
-        };
-        return (React.createElement("div", { style: style },
+        return (React.createElement("div", null,
             React.createElement(Header_1.default, null),
             React.createElement(Content_1.default, { articles: this.state.articles })));
     }

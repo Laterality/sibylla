@@ -5,6 +5,7 @@ import { AxiosResponse } from "axios";
 
 import { default as Api } from "../lib/Api";
 import Article from "../lib/Article";
+import Header from "../component/Header";
 
 interface IArticleContentPageComponentProps {
     location: Location;
@@ -13,6 +14,12 @@ interface IArticleContentPageComponentProps {
 interface IArticleContentPageComponentState {
     article: Article;
 }
+
+const style = {
+    content: {
+        whiteSpace: "pre-wrap" as "pre-wrap",
+    }
+};
 
 export default class ArticleContentPageComponent extends React.Component<IArticleContentPageComponentProps, IArticleContentPageComponentState> {
 
@@ -27,7 +34,6 @@ export default class ArticleContentPageComponent extends React.Component<IArticl
 
     componentDidMount() {
         const articleId = qs.parse(this.props.location.search.split("?")[1])["id"]
-        console.log(articleId);
 
         // Get article list
         Api.retrieveArticle(Number(articleId))
@@ -55,10 +61,13 @@ export default class ArticleContentPageComponent extends React.Component<IArticl
             now.getUTCDate() !== writtenDate.getUTCDate();
         const writtenDateStr = `${dspYear? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
         
-        return (<div className="article-list-item">
-            <h2>{article.title}</h2>
-            <div className="article-meta"><img src="./img/joongang_logo_circle.png"/><h6>{article.sourceName}</h6><h6>| {writtenDateStr}</h6><a href={article.url} className="goto-source">원문 보기</a></div>
-            <p>{article.content}</p>
+        return (<div>
+            <Header/>
+            <div id="content">
+                <h2 className="my-3">{article.title}</h2>
+                <div className="article-meta"><img src="./img/joongang_logo_circle.png"/><h6>{article.sourceName}</h6><h6>| {writtenDateStr}</h6><a href={article.url} className="goto-source">원문 보기</a></div>
+                <p className="my-3" style={style.content}>{article.content}</p>
+            </div>
         </div>);
     }
 }
