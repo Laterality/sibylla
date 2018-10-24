@@ -13,7 +13,8 @@ RUN apk update \
     && apk add --no-cache bash \
     && apk add --no-cache --virtual=build-dependencies unzip \
     && apk add --no-cache curl \
-    && apk add --no-cache build-base
+    && apk add --no-cache build-base \
+    && apk add --no-cache libffi-dev
 ### Get Python, PIP
 RUN apk add --no-cache python3-dev \
     && python3 -m ensurepip \
