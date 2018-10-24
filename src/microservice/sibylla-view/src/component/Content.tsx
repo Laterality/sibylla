@@ -10,42 +10,18 @@ import { default as Article } from "../lib/Article";
 
 import ArticleListComponent, { default as ArticleList } from "./ArticleList";
 
-interface IContentComponentState {
+interface IContentComponentProps {
     articles: Array<Article>;
 }
 
-export default class ContentComponent extends React.Component<any, IContentComponentState> {
+export default class ContentComponent extends React.Component<IContentComponentProps> {
 
     constructor(props: any) {
         super(props);
-
-        this.state = {
-            articles: [],
-        };
     }
 
-    componentDidMount() {
-        // Get article list
-        Api.retrieveArticles(21)
-        .then((res: AxiosResponse) => {
-            const articles = [];
-
-            for (let a of res.data["articles"]) {
-                articles.push(new Article(
-                    a["id"], 
-                    a["title"],
-                    a["content"],
-                    a["sourceName"],
-                    new Date(a["writtenDate"]),
-                    a["url"],
-                    a["images"]));
-            }
-            this.setState({articles});
-        });
-    }
-    
     render() {
-        const { articles } = this.state;
+        const { articles } = this.props;
         const lengthToShow = articles.length - articles.length % 3;
         const articleComponents = [];
         let t = 0;
