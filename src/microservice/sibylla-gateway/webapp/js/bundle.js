@@ -27189,9 +27189,8 @@ class App extends React.Component {
         return (React.createElement(react_cookie_1.CookiesProvider, null,
             React.createElement(styles_1.MuiThemeProvider, { theme: theme },
                 React.createElement(ReactRouter.BrowserRouter, null,
-                    React.createElement("div", null,
-                        React.createElement(ReactRouter.Route, { exact: true, path: "/", component: Home_1.default }),
-                        React.createElement(ReactRouter.Route, { path: "/article", component: ArticleContent_1.default }))))));
+                    React.createElement(ReactRouter.Route, { exact: true, path: "/", component: Home_1.default }),
+                    React.createElement(ReactRouter.Route, { path: "/article", component: ArticleContent_1.default })))));
     }
 }
 exports.default = App;
