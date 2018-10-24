@@ -1,4 +1,4 @@
-from openjdk:8
+from openjdk:8-alpine
 
 VOLUME ./model:/usr/src/app/model
 EXPOSE 8080
@@ -8,8 +8,13 @@ ENV FLASK_APP src/app
 
 WORKDIR /usr/src/app
 COPY . .
-RUN add-apt-repository ppa:jonathonf/python-3.6
-RUN apt-get update -y
-RUN apt-get install -y python3.6 libpython3.6
+### Get Python, PIP
+RUN apk add --no-cache python3 \
+    && python3 -m ensurepip \
+    && pip3 install --upgrade pip setuptools \
+    && rm -r /usr/lib/python*/ensurepip && \
+    if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
+    if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
+    rm -r /root/.cache
 RUN pip install -r requirements.txt
 CMD flask run --host 0.0.0.0 --port 8080
