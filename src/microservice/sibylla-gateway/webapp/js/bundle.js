@@ -27364,28 +27364,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const Column1Row_1 = __importDefault(__webpack_require__(/*! ./Column1Row */ "./src/component/Column1Row.tsx"));
 const Column2Row_1 = __importDefault(__webpack_require__(/*! ./Column2Row */ "./src/component/Column2Row.tsx"));
-const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
-const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 class ContentComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            articles: [],
-        };
-    }
-    componentDidMount() {
-        // Get article list
-        Api_1.default.retrieveArticles(21)
-            .then((res) => {
-            const articles = [];
-            for (let a of res.data["articles"]) {
-                articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"]));
-            }
-            this.setState({ articles });
-        });
     }
     render() {
-        const { articles } = this.state;
+        const { articles } = this.props;
         const lengthToShow = articles.length - articles.length % 3;
         const articleComponents = [];
         let t = 0;
@@ -27562,6 +27546,9 @@ Api.BASE_URL = "http://altair.latera.kr/sb/api";
 Api.retrieveArticles = (limit = 20) => {
     return axios_1.default.get(`${Api.BASE_URL}/article/list?limit=${limit}`);
 };
+Api.retrieveArticle = (id) => {
+    return axios_1.default.get(`${Api.BASE_URL}/article/by-id/${id}`);
+};
 Api.signIn = (email, password) => {
     return axios_1.default.post(`${Api.BASE_URL}/auth/login`, {
         email,
@@ -27615,32 +27602,50 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const qs = __importStar(__webpack_require__(/*! querystring */ "./C:/Users/Jinwoo Shin/AppData/Roaming/npm/node_modules/webpack/node_modules/querystring-es3/index.js"));
+const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
+const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 class ArticleContentPageComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            article: new Article_1.default(0, "", "", "", new Date(), "", [])
+        };
+    }
     componentDidMount() {
         const articleId = qs.parse(this.props.location.search.split("?")[1])["id"];
         console.log(articleId);
+        // Get article list
+        Api_1.default.retrieveArticle(Number(articleId))
+            .then((res) => {
+            this.setState({
+                article: new Article_1.default(res.data["id"], res.data["title"], res.data["content"], res.data["sourceName"], new Date(res.data["writtenDate"]), res.data["url"], res.data["images"]),
+            });
+        });
     }
     render() {
-        const { props } = this;
-        const { writtenDate } = props.article;
+        const { article } = this.state;
+        const { writtenDate } = article;
         const now = new Date();
         const dspYear = now.getUTCFullYear() !== writtenDate.getUTCFullYear();
         const dspMonthDay = now.getUTCMonth() !== writtenDate.getUTCMonth() ||
             now.getUTCDate() !== writtenDate.getUTCDate();
         const writtenDateStr = `${dspYear ? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay ? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
         return (React.createElement("div", { className: "article-list-item" },
-            React.createElement("h2", null, props.article.title),
+            React.createElement("h2", null, article.title),
             React.createElement("div", { className: "article-meta" },
                 React.createElement("img", { src: "./img/joongang_logo_circle.png" }),
-                React.createElement("h6", null, props.article.sourceName),
+                React.createElement("h6", null, article.sourceName),
                 React.createElement("h6", null,
                     "| ",
                     writtenDateStr),
-                React.createElement("a", { href: props.article.url, className: "goto-source" }, "\uC6D0\uBB38 \uBCF4\uAE30")),
-            React.createElement("p", null, props.article.content)));
+                React.createElement("a", { href: article.url, className: "goto-source" }, "\uC6D0\uBB38 \uBCF4\uAE30")),
+            React.createElement("p", null, article.content)));
     }
 }
 exports.default = ArticleContentPageComponent;
@@ -27669,16 +27674,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
+const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
 const Content_1 = __importDefault(__webpack_require__(/*! ../component/Content */ "./src/component/Content.tsx"));
 class HomePageComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            articles: [],
+        };
+    }
     render() {
         const style = {
             background: "#fafafa",
         };
         return (React.createElement("div", { style: style },
             React.createElement(Header_1.default, null),
-            React.createElement(Content_1.default, null)));
+            React.createElement(Content_1.default, { articles: this.state.articles })));
+    }
+    componentDidMount() {
+        // Get article list
+        Api_1.default.retrieveArticles(21)
+            .then((res) => {
+            const articles = [];
+            for (let a of res.data["articles"]) {
+                articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"]));
+            }
+            this.setState({ articles });
+        });
     }
 }
 exports.default = HomePageComponent;
