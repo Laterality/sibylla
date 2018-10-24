@@ -8,6 +8,11 @@ ENV FLASK_APP src/app
 
 WORKDIR /usr/src/app
 COPY . .
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache bash \
+    && apk add --no-cache --virtual=build-dependencies unzip \
+    && apk add --no-cache curl 
 ### Get Python, PIP
 RUN apk add --no-cache python3 \
     && python3 -m ensurepip \
