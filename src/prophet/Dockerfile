@@ -15,7 +15,7 @@ RUN apk update \
     && apk add --no-cache curl \
     && apk add --no-cache build-base
 ### Get Python, PIP
-RUN apk add --no-cache python3 \
+RUN apk add --no-cache python3-dev \
     && python3 -m ensurepip \
     && pip3 install --upgrade pip setuptools \
     && rm -r /usr/lib/python*/ensurepip && \
