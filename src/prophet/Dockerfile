@@ -12,7 +12,8 @@ RUN apk update \
     && apk upgrade \
     && apk add --no-cache bash \
     && apk add --no-cache --virtual=build-dependencies unzip \
-    && apk add --no-cache curl 
+    && apk add --no-cache curl
+    && apk add --no-cache build-base
 ### Get Python, PIP
 RUN apk add --no-cache python3 \
     && python3 -m ensurepip \
