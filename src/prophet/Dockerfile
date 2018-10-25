@@ -1,4 +1,4 @@
-from openjdk:8
+from openjdk:8-alpine
 
 VOLUME ./model:/usr/src/app/model
 EXPOSE 8080
