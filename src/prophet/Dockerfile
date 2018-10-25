@@ -3,10 +3,6 @@ from openjdk:8-alpine
 VOLUME ./model:/usr/src/app/model
 EXPOSE 8080
 
-ENV MODEL_PATH /usr/src/app/model/article.model
-ENV FLASK_APP src/app
-ENV LD_LIBRARY /usr/lib/jvm/java-1.8-openjdk/jre/lib/amd64
-
 WORKDIR /usr/src/app
 COPY . .
 RUN apk update \
@@ -28,4 +24,8 @@ RUN apk add --no-cache python3-dev \
     if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
     rm -r /root/.cache
 RUN pip install -r requirements.txt
+
+ENV MODEL_PATH /usr/src/app/model/article.model
+ENV FLASK_APP src/app
+ENV LD_LIBRARY /usr/lib/jvm/java-1.8-openjdk/jre/lib/amd64
 CMD flask run --host 0.0.0.0 --port 8080
