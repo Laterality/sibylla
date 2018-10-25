@@ -20,7 +20,7 @@ def train(model, docs, labels):
 
     it = DocIterator(tokenized, labels)
 
-    model.build_vocab(it)
+    model.build_vocab(it, update=True)
 
     print("train with %d docs" % len(docs))
 
