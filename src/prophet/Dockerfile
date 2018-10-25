@@ -24,7 +24,8 @@ COPY . .
 #     if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
 #     rm -r /root/.cache
 RUN apt-get update -y && \
-apt-get install -y python-pip python3.6-dev build-essential 
+apt-get install -y python3-pip python3-dev build-essential && \
+pip3 install --upgrade pip
 RUN pip install -r requirements.txt
 
 ENV MODEL_PATH /usr/src/app/model/article.model
