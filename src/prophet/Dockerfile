@@ -23,7 +23,7 @@ COPY . .
 #     if [ ! -e /usr/bin/pip ]; then ln -s pip3 /usr/bin/pip ; fi && \
 #     if [[ ! -e /usr/bin/python ]]; then ln -sf /usr/bin/python3 /usr/bin/python; fi && \
 #     rm -r /root/.cache
-RUN apt-get update -y &&
+RUN apt-get update -y && \
 apt-get install -y python-pip python3.6-dev build-essential 
 RUN pip install -r requirements.txt
 
