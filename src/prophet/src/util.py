@@ -2,6 +2,7 @@ import gensim
 import multiprocessing
 import pymysql
 from konlpy.tag import Okt
+from konlpy.tag import Mecab
 
 import os
 
@@ -65,7 +66,8 @@ def save_model(model):
 
 
 def tokenize(doc_list):
-    okt = Okt()
+    mecab = Mecab()
+    # okt = Okt()
 
     stopwords = ["이", "가", "의", "을", "은", "를", "이다", "는", "에", "에서", "로", "으로", "중앙일보", "중부일보",
                  "기자", ".", "·", ",", "'", "(", ")", "\"", "[", "]"]
@@ -73,7 +75,8 @@ def tokenize(doc_list):
     tokenized = []
 
     for d in doc_list:
-        tokens = okt.morphs(d)
+        tokens = mecab.morphs(d)
+        # tokens = okt.morphs(d)
         tokens = [w for w in tokens if w not in stopwords]
         tokenized.append(tokens)
 

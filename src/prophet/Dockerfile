@@ -28,6 +28,7 @@ RUN apk add --no-cache python3-dev \
 # apt-get install -y python3-pip python3-dev build-essential && \
 # pip3 install --upgrade pip
 RUN pip install -r requirements.txt
+RUN /bin/bash <(curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh)
 
 ENV MODEL_PATH /usr/src/app/model/article.model
 ENV FLASK_APP src/app
