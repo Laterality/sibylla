@@ -35,7 +35,7 @@ def fetch_top_100():
 def set_trained(ids):
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
         query = "update article set used_in_train=true where id=%d"
-        conn.executemany(query, ids)
+        conn.executemany(query, [int(_id) for _id in ids])
 
 
 def load_model():
