@@ -27456,22 +27456,23 @@ class HeaderComponent extends react_1.Component {
             const password = signInInputPassword.value;
             Api_1.default.signIn(email, password)
                 .then((res) => {
-                console.log(res.data["data"]["token"]);
-                this.props.cookies.set("auth", res.data["data"]["token"]);
-                this.setState({ signedIn: true });
-                console.log(this.props.cookies.get("auth"));
+                if (res.status === 200) {
+                    this.props.cookies.set("auth", res.data["data"]["token"]);
+                    this.setState({ signedIn: true, signDialogOpen: false });
+                    console.log(this.props.cookies.get("auth"));
+                }
             });
         };
         this.state = {
-            signedIn: false,
+            signedIn: this.props.cookies.get("auth_token") !== undefined,
             signDialogOpen: false,
             currentDialogIndex: 0,
         };
     }
     render() {
-        const authToken = this.props.cookies.get("auth_token");
+        const { state } = this;
         let profileComp;
-        if (authToken === undefined) {
+        if (!state.signedIn) {
             profileComp = React.createElement("button", { type: "button", className: "btn btn-login my-3 mr-3", onClick: this.handleSignButtonClick }, "\uB85C\uADF8\uC778 / \uD68C\uC6D0\uAC00\uC785");
         }
         else {
@@ -27625,7 +27626,6 @@ class ArticleContentPageComponent extends React.Component {
     }
     componentDidMount() {
         const articleId = qs.parse(this.props.location.search.split("?")[1])["id"];
-        console.log(articleId);
         // Get article list
         Api_1.default.retrieveArticle(Number(articleId))
             .then((res) => {

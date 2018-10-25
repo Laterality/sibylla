@@ -38,7 +38,7 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
         super(props);
 
         this.state = {
-            signedIn: false,
+            signedIn: this.props.cookies.get("auth_token") !== undefined,
             signDialogOpen: false,
             currentDialogIndex: 0,
         };
@@ -46,10 +46,9 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
     }
 
     render() {
-        const authToken = this.props.cookies.get("auth_token");
-
+        const { state } = this;
         let profileComp;
-        if (authToken === undefined) {
+        if (!state.signedIn) {
             profileComp = <button type="button" 
                 className="btn btn-login my-3 mr-3"
                 onClick={this.handleSignButtonClick}>로그인 / 회원가입</button>;
@@ -146,10 +145,11 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
 
         Api.signIn(email, password)
         .then((res) => {
-            console.log(res.data["data"]["token"]);
-            this.props.cookies.set("auth", res.data["data"]["token"]);
-            this.setState({signedIn: true});
-            console.log(this.props.cookies.get("auth"));
+            if (res.status === 200) {
+                this.props.cookies.set("auth", res.data["data"]["token"]);
+                this.setState({signedIn: true, signDialogOpen: false});
+                console.log(this.props.cookies.get("auth"));
+            }
         });
     }
 }

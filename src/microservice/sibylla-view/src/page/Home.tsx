@@ -27,12 +27,9 @@ export default class HomePageComponent extends React.Component<IHomePageComponen
     }
 
     render() {
-        const style = {
-            background: "#fafafa",
-        };
 
         return (
-            <div style={style}>
+            <div>
                 <Header/>
                 <Content articles={this.state.articles}/>
             </div>
