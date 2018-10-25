@@ -5,6 +5,7 @@ EXPOSE 8080
 
 ENV MODEL_PATH /usr/src/app/model/article.model
 ENV FLASK_APP src/app
+ENV LD_LIBRARY /usr/lib/jvm/jre/lib/amd64
 
 WORKDIR /usr/src/app
 COPY . .
