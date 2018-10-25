@@ -16,7 +16,8 @@ RUN apk update \
     && apk add --no-cache build-base \
     && apk add --no-cache libffi-dev \
     && apk add --no-cache openssl-dev \
-    && apk add --no-cache lapack-dev
+    && apk add --no-cache lapack-dev \
+    && apk add --no-cache gfortran
 ### Get Python, PIP
 RUN apk add --no-cache python3-dev \
     && python3 -m ensurepip \
