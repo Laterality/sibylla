@@ -27265,6 +27265,14 @@ const React = __importStar(__webpack_require__(/*! react */ "react"));
 const ReactRouter = __importStar(__webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js"));
 const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "./src/component/ArticleMeta.tsx"));
 class Column1RowComponent extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.handleArticleClick = () => {
+            if (this.props.onClick) {
+                this.props.onClick(this.props.article.id);
+            }
+        };
+    }
     render() {
         const { article } = this.props;
         const link = `./article?id=${article.id}`;
@@ -27274,7 +27282,7 @@ class Column1RowComponent extends React.Component {
         return (React.createElement("div", { className: "column-1-article article-card row" },
             React.createElement("div", { style: img, className: "article-cover col-7" }),
             React.createElement("div", { className: "article-overview col-5 my-3" },
-                React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link },
+                React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link, onClick: this.handleArticleClick },
                     React.createElement("h2", null, article.title)),
                 React.createElement("p", null, article.content.slice(0, 300) + "..."),
                 React.createElement(ArticleMeta_1.default, { sourceName: article.sourceName, writtenDate: article.writtenDate, url: article.url }))));
@@ -27309,6 +27317,21 @@ const React = __importStar(__webpack_require__(/*! react */ "react"));
 const ReactRouter = __importStar(__webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js"));
 const ArticleMeta_1 = __importDefault(__webpack_require__(/*! ./ArticleMeta */ "./src/component/ArticleMeta.tsx"));
 class Column2RowComponent extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.handleArticleClick = (num) => {
+            if (this.props.onClick) {
+                switch (num) {
+                    case Column2RowComponent.ARTICLE_1:
+                        this.props.onClick(this.props.article1.id);
+                        break;
+                    case Column2RowComponent.ARTICLE_2:
+                        this.props.onClick(this.props.article2.id);
+                        break;
+                }
+            }
+        };
+    }
     render() {
         const { article1, article2 } = this.props;
         const link1 = `./article?id=${article1.id}`;
@@ -27323,19 +27346,21 @@ class Column2RowComponent extends React.Component {
             React.createElement("div", { className: "col-5 article-card" },
                 React.createElement("div", { className: "article-cover", style: img1 }),
                 React.createElement("div", { className: "article-overview mt-3" },
-                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link1 },
+                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link1, onClick: () => this.handleArticleClick(Column2RowComponent.ARTICLE_1) },
                         React.createElement("h2", null, article1.title)),
                     React.createElement("p", null, article1.content.slice(0, 200) + "..."),
                     React.createElement(ArticleMeta_1.default, { sourceName: article1.sourceName, writtenDate: article1.writtenDate, url: article1.url }))),
             React.createElement("div", { className: "article-card col-5" },
                 React.createElement("div", { className: "article-cover", style: img2 }),
                 React.createElement("div", { className: "article-overview mt-3" },
-                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link2 },
+                    React.createElement(ReactRouter.Link, { className: "article-title-anchor", to: link2, onClick: () => this.handleArticleClick(Column2RowComponent.ARTICLE_2) },
                         React.createElement("h2", null, article2.title)),
                     React.createElement("p", null, article2.content.slice(0, 200) + "..."),
                     React.createElement(ArticleMeta_1.default, { sourceName: article2.sourceName, writtenDate: article2.writtenDate, url: article2.url })))));
     }
 }
+Column2RowComponent.ARTICLE_1 = 1;
+Column2RowComponent.ARTICLE_2 = 2;
 exports.default = Column2RowComponent;
 
 
@@ -27362,7 +27387,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
-const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 const Column1Row_1 = __importDefault(__webpack_require__(/*! ./Column1Row */ "./src/component/Column1Row.tsx"));
 const Column2Row_1 = __importDefault(__webpack_require__(/*! ./Column2Row */ "./src/component/Column2Row.tsx"));
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
@@ -27371,7 +27395,7 @@ class ContentComponent extends React.Component {
         super(props);
         this.handleArticleClick = (id) => {
             console.log("article clicked: " + id);
-            Api_1.default.read(this.props.cookies.get("auth"))
+            Api_1.default.read(this.props.authToken)
                 .then((res) => {
                 // nothing to do
             });
@@ -27397,7 +27421,7 @@ class ContentComponent extends React.Component {
         return (React.createElement("div", { id: "content" }, articleComponents));
     }
 }
-exports.default = react_cookie_1.withCookies(ContentComponent);
+exports.default = ContentComponent;
 
 
 /***/ }),
@@ -27728,17 +27752,19 @@ const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/A
 const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
 const Content_1 = __importDefault(__webpack_require__(/*! ../component/Content */ "./src/component/Content.tsx"));
+const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 class HomePageComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             articles: [],
+            authToken: this.props.cookies.get("auth"),
         };
     }
     render() {
         return (React.createElement("div", null,
             React.createElement(Header_1.default, null),
-            React.createElement(Content_1.default, { articles: this.state.articles })));
+            React.createElement(Content_1.default, { articles: this.state.articles, authToken: this.state.authToken })));
     }
     componentDidMount() {
         // Get article list
@@ -27752,7 +27778,7 @@ class HomePageComponent extends React.Component {
         });
     }
 }
-exports.default = HomePageComponent;
+exports.default = react_cookie_1.withCookies(HomePageComponent);
 
 
 /***/ }),
