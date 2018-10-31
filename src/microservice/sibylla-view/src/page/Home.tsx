@@ -7,22 +7,26 @@ import { default as Article } from "../lib/Article";
 
 import { default as Header } from "../component/Header";
 import { default as Content } from "../component/Content";
+import { withCookies, Cookies } from "react-cookie";
 
 interface IHomePageComponentProps {
     location: Location;
+    cookies: Cookies;
 }
 
 interface IHomePageComponentState {
     articles: Array<Article>;
+    authToken: string;
 }
 
-export default class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePageComponentState> {
+class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePageComponentState> {
 
     constructor(props: IHomePageComponentProps) {
         super(props);
 
         this.state = {
             articles: [],
+            authToken: this.props.cookies.get("auth"),
         };
     }
 
@@ -30,8 +34,10 @@ export default class HomePageComponent extends React.Component<IHomePageComponen
 
         return (
             <div>
-                <Header/>
-                <Content articles={this.state.articles}/>
+                <Header />
+                <Content
+                    articles={this.state.articles}
+                    authToken={this.state.authToken}/>
             </div>
         );
     }
@@ -56,3 +62,5 @@ export default class HomePageComponent extends React.Component<IHomePageComponen
         });
     }
 }
+
+export default withCookies(HomePageComponent);

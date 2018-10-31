@@ -12,10 +12,10 @@ import { default as Article } from "../lib/Article";
 
 interface IContentComponentProps {
     articles: Array<Article>;
-    cookies: Cookies;
+    authToken: string;
 }
 
-class ContentComponent extends React.Component<IContentComponentProps> {
+export default class ContentComponent extends React.Component<IContentComponentProps> {
 
     constructor(props: any) {
         super(props);
@@ -49,12 +49,9 @@ class ContentComponent extends React.Component<IContentComponentProps> {
 
     private handleArticleClick = (id: number) => {
         console.log("article clicked: " + id);
-        Api.read(this.props.cookies.get("auth"))
+        Api.read(this.props.authToken)
         .then((res: AxiosResponse) => {
             // nothing to do
         });
     }
 }
-
-export default withCookies(ContentComponent);
-

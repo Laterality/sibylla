@@ -13,6 +13,9 @@ interface IColumn2RowProps {
 
 export default class Column2RowComponent extends React.Component<IColumn2RowProps> {
 
+    private static readonly ARTICLE_1 = 1;
+    private static readonly ARTICLE_2 = 2;
+
     render() {
         const { article1, article2 } = this.props;
         const link1 = `./article?id=${article1.id}`;
@@ -29,7 +32,9 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
             <div className="col-5 article-card">
                 <div className="article-cover" style={img1}></div>
                 <div className="article-overview mt-3">
-                    <ReactRouter.Link className="article-title-anchor" to={link1}>
+                    <ReactRouter.Link 
+                        className="article-title-anchor" to={link1}
+                        onClick={ () => this.handleArticleClick(Column2RowComponent.ARTICLE_1)}>
                         <h2>{article1.title}</h2>
                     </ReactRouter.Link>
                     <p>{article1.content.slice(0, 200) + "..."}</p>
@@ -42,7 +47,9 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
             <div className="article-card col-5">
             <div className="article-cover" style={img2}></div>
                 <div className="article-overview mt-3">
-                    <ReactRouter.Link className="article-title-anchor" to={link2}>
+                    <ReactRouter.Link 
+                        className="article-title-anchor" to={link2}
+                        onClick={() => this.handleArticleClick(Column2RowComponent.ARTICLE_2)}>
                         <h2>{article2.title}</h2>
                     </ReactRouter.Link>
                     <p>{article2.content.slice(0, 200) + "..."}</p>
@@ -53,5 +60,18 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
                 </div>
             </div>
         </div>);
+    }
+
+    private handleArticleClick = (num: number) => {
+        if (this.props.onClick) {
+            switch (num) {
+            case Column2RowComponent.ARTICLE_1:
+                this.props.onClick(this.props.article1.id);
+                break;
+            case Column2RowComponent.ARTICLE_2:
+                this.props.onClick(this.props.article2.id);
+                break;
+            }
+        }
     }
 }
