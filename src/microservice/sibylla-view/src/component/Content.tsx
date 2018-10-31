@@ -49,7 +49,7 @@ export default class ContentComponent extends React.Component<IContentComponentP
 
     private handleArticleClick = (id: number) => {
         console.log("article clicked: " + id);
-        Api.read(this.props.authToken)
+        Api.read(this.props.authToken, id)
         .then((res: AxiosResponse) => {
             // nothing to do
         });

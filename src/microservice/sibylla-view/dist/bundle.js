@@ -27395,7 +27395,7 @@ class ContentComponent extends React.Component {
         super(props);
         this.handleArticleClick = (id) => {
             console.log("article clicked: " + id);
-            Api_1.default.read(this.props.authToken)
+            Api_1.default.read(this.props.authToken, id)
                 .then((res) => {
                 // nothing to do
             });
@@ -27615,8 +27615,8 @@ Api.logout = (auth) => {
         },
     });
 };
-Api.read = (auth) => {
-    return axios_1.default.get(`${Api.BASE_URL}/article/read`, {
+Api.read = (auth, articleId) => {
+    return axios_1.default.get(`${Api.BASE_URL}/article/read?articleId=${articleId}`, {
         headers: {
             Authorization: `Bearer ${auth}`,
         }

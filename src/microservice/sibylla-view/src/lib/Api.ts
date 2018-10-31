@@ -34,8 +34,8 @@ export default class Api {
         });
     }
 
-    static readonly read = (auth: string): AxiosPromise => {
-        return Axios.get(`${Api.BASE_URL}/article/read`, {
+    static readonly read = (auth: string, articleId: number): AxiosPromise => {
+        return Axios.get(`${Api.BASE_URL}/article/read?articleId=${articleId}`, {
             headers: {
                 Authorization: `Bearer ${auth}`,
             }
