@@ -21,10 +21,14 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
 
     constructor(props: IHomePageComponentProps) {
         super(props);
+        let signedIn = false;
+        if (this.props.cookies) {
+            if (this.props.cookies.get("auth")) { signedIn = true; }
+        }
 
         this.state = {
             articles: [],
-            signedIn: false,
+            signedIn,
         };
     }
 
@@ -70,7 +74,6 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                 if (!this.props.cookies) { return; }
                 this.props.cookies.set("auth", res.data["data"]["token"]);
                 this.setState({signedIn: true});
-                console.log(this.props.cookies.get("auth"));
             }
         });
     }

@@ -48,7 +48,6 @@ export default class ContentComponent extends React.Component<IContentComponentP
     }
 
     private handleArticleClick = (id: number) => {
-        console.log("article clicked: " + id);
         this.props.onArticleClick(id);
     }
 }

@@ -51,7 +51,6 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
     render() {
         const { props } = this;
-        const { state } = this;
         let profileComp;
         if (!props.signedIn) {
             profileComp = <button type="button" 

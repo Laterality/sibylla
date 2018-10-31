@@ -27393,7 +27393,6 @@ class ContentComponent extends React.Component {
     constructor(props) {
         super(props);
         this.handleArticleClick = (id) => {
-            console.log("article clicked: " + id);
             this.props.onArticleClick(id);
         };
     }
@@ -27775,7 +27774,6 @@ class HomePageComponent extends React.Component {
                     }
                     this.props.cookies.set("auth", res.data["data"]["token"]);
                     this.setState({ signedIn: true });
-                    console.log(this.props.cookies.get("auth"));
                 }
             });
         };
@@ -27802,9 +27800,15 @@ class HomePageComponent extends React.Component {
                 // nothing to do
             });
         };
+        let signedIn = false;
+        if (this.props.cookies) {
+            if (this.props.cookies.get("auth")) {
+                signedIn = true;
+            }
+        }
         this.state = {
             articles: [],
-            signedIn: false,
+            signedIn,
         };
     }
     render() {
