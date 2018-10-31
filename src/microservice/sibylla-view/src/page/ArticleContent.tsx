@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactRouter from "react-router-dom";
 import * as qs from "querystring";
 import { AxiosResponse } from "axios";
+import { withCookies, Cookies } from "react-cookie";
 
 import { default as Api } from "../lib/Api";
 import Article from "../lib/Article";
@@ -9,10 +10,12 @@ import Header from "../component/Header";
 
 interface IArticleContentPageComponentProps {
     location: Location;
+    cookies: Cookies;
 }
 
 interface IArticleContentPageComponentState {
     article: Article;
+    signedIn: boolean;
 }
 
 const style = {
@@ -21,14 +24,15 @@ const style = {
     }
 };
 
-export default class ArticleContentPageComponent extends React.Component<IArticleContentPageComponentProps, IArticleContentPageComponentState> {
+class ArticleContentPageComponent extends React.Component<IArticleContentPageComponentProps, IArticleContentPageComponentState> {
 
     constructor(props: IArticleContentPageComponentProps) {
         super(props);
 
         this.state = {
-            article: new Article(0, "", "", "", new Date(), "", [])
-        }
+            article: new Article(0, "", "", "", new Date(), "", []),
+            signedIn: false,
+        };
         
     }
 
@@ -62,7 +66,10 @@ export default class ArticleContentPageComponent extends React.Component<IArticl
         const writtenDateStr = `${dspYear? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
         
         return (<div>
-            <Header/>
+            <Header
+                signedIn={this.state.signedIn}
+                onSignedClick={this.handleSignInClick}
+                onLogoutClick={this.handleLogout}/>
             <div id="content">
                 <h2 className="my-3">{article.title}</h2>
                 <div className="article-meta"><img src="./img/joongang_logo_circle.png"/><h6>{article.sourceName}</h6><h6>| {writtenDateStr}</h6><a href={article.url} className="goto-source">원문 보기</a></div>
@@ -70,4 +77,33 @@ export default class ArticleContentPageComponent extends React.Component<IArticl
             </div>
         </div>);
     }
+
+    private handleSignInClick = (email: string, password: string,) => {
+        Api.signIn(email, password)
+        .then((res) => {
+            if (res.status === 200) {
+                this.props.cookies.set("auth", res.data["data"]["token"]);
+                this.setState({signedIn: true});
+                console.log(this.props.cookies.get("auth"));
+            }
+        });
+    }
+
+    private handleLogout = () => {
+        Api.logout(this.props.cookies.get("auth"))
+        .then((res: AxiosResponse) => {
+            if (res.status === 200) {
+                this.setState({signedIn: false});
+            }
+        });
+    }
+
+    private handleArticleClick = (id: number) => {
+        Api.read(this.props.cookies.get("auth"), id)
+        .then((res: AxiosResponse) => {
+            // nothing to do
+        });
+    }
 }
+
+export default withCookies(ArticleContentPageComponent);

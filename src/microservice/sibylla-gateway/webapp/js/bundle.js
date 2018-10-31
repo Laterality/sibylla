@@ -27389,16 +27389,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const Column1Row_1 = __importDefault(__webpack_require__(/*! ./Column1Row */ "./src/component/Column1Row.tsx"));
 const Column2Row_1 = __importDefault(__webpack_require__(/*! ./Column2Row */ "./src/component/Column2Row.tsx"));
-const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 class ContentComponent extends React.Component {
     constructor(props) {
         super(props);
         this.handleArticleClick = (id) => {
             console.log("article clicked: " + id);
-            Api_1.default.read(this.props.authToken, id)
-                .then((res) => {
-                // nothing to do
-            });
+            this.props.onArticleClick(id);
         };
     }
     render() {
@@ -27448,13 +27444,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const react_1 = __webpack_require__(/*! react */ "react");
-const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 const Dialog_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Dialog */ "./node_modules/@material-ui/core/Dialog/index.js"));
 const DialogContent_1 = __importDefault(__webpack_require__(/*! @material-ui/core/DialogContent */ "./node_modules/@material-ui/core/DialogContent/index.js"));
 const react_swipeable_views_1 = __importDefault(__webpack_require__(/*! react-swipeable-views */ "./node_modules/react-swipeable-views/lib/index.js"));
 const TextField_1 = __importDefault(__webpack_require__(/*! @material-ui/core/TextField */ "./node_modules/@material-ui/core/TextField/index.js"));
 const Typography_1 = __importDefault(__webpack_require__(/*! @material-ui/core/Typography */ "./node_modules/@material-ui/core/Typography/index.js"));
-const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 const style = {
     signUpText: {
         float: "right",
@@ -27490,33 +27484,21 @@ class HeaderComponent extends react_1.Component {
             }
             const email = signInInputEmail.value;
             const password = signInInputPassword.value;
-            Api_1.default.signIn(email, password)
-                .then((res) => {
-                if (res.status === 200) {
-                    this.props.cookies.set("auth", res.data["data"]["token"]);
-                    this.setState({ signedIn: true, signDialogOpen: false });
-                    console.log(this.props.cookies.get("auth"));
-                }
-            });
+            this.props.onSignedClick(email, password);
         };
         this.handleLogoutClick = () => {
-            Api_1.default.logout(this.props.cookies.get("auth"))
-                .then((res) => {
-                if (res.status === 200) {
-                    this.setState({ signedIn: false });
-                }
-            });
+            this.props.onLogoutClick();
         };
         this.state = {
-            signedIn: this.props.cookies.get("auth_token") !== undefined,
             signDialogOpen: false,
             currentDialogIndex: 0,
         };
     }
     render() {
+        const { props } = this;
         const { state } = this;
         let profileComp;
-        if (!state.signedIn) {
+        if (!props.signedIn) {
             profileComp = React.createElement("button", { type: "button", className: "btn btn-login my-3 mr-3", onClick: this.handleSignButtonClick }, "\uB85C\uADF8\uC778 / \uD68C\uC6D0\uAC00\uC785");
         }
         else {
@@ -27547,7 +27529,7 @@ class HeaderComponent extends react_1.Component {
                             React.createElement("a", { className: "my-3", style: style.signUpText, onClick: () => this.handleChangeDialogIndex(0) }, "\uC774\uC804")))))));
     }
 }
-exports.default = react_cookie_1.withCookies(HeaderComponent);
+exports.default = HeaderComponent;
 
 
 /***/ }),
@@ -27675,6 +27657,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
 const qs = __importStar(__webpack_require__(/*! querystring */ "./C:/Users/Jinwoo Shin/AppData/Roaming/npm/node_modules/webpack/node_modules/querystring-es3/index.js"));
+const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
@@ -27686,8 +27669,33 @@ const style = {
 class ArticleContentPageComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.handleSignInClick = (email, password) => {
+            Api_1.default.signIn(email, password)
+                .then((res) => {
+                if (res.status === 200) {
+                    this.props.cookies.set("auth", res.data["data"]["token"]);
+                    this.setState({ signedIn: true });
+                    console.log(this.props.cookies.get("auth"));
+                }
+            });
+        };
+        this.handleLogout = () => {
+            Api_1.default.logout(this.props.cookies.get("auth"))
+                .then((res) => {
+                if (res.status === 200) {
+                    this.setState({ signedIn: false });
+                }
+            });
+        };
+        this.handleArticleClick = (id) => {
+            Api_1.default.read(this.props.cookies.get("auth"), id)
+                .then((res) => {
+                // nothing to do
+            });
+        };
         this.state = {
-            article: new Article_1.default(0, "", "", "", new Date(), "", [])
+            article: new Article_1.default(0, "", "", "", new Date(), "", []),
+            signedIn: false,
         };
     }
     componentDidMount() {
@@ -27709,7 +27717,7 @@ class ArticleContentPageComponent extends React.Component {
             now.getUTCDate() !== writtenDate.getUTCDate();
         const writtenDateStr = `${dspYear ? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay ? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
         return (React.createElement("div", null,
-            React.createElement(Header_1.default, null),
+            React.createElement(Header_1.default, { signedIn: this.state.signedIn, onSignedClick: this.handleSignInClick, onLogoutClick: this.handleLogout }),
             React.createElement("div", { id: "content" },
                 React.createElement("h2", { className: "my-3" }, article.title),
                 React.createElement("div", { className: "article-meta" },
@@ -27722,7 +27730,7 @@ class ArticleContentPageComponent extends React.Component {
                 React.createElement("p", { className: "my-3", style: style.content }, article.content))));
     }
 }
-exports.default = ArticleContentPageComponent;
+exports.default = react_cookie_1.withCookies(ArticleContentPageComponent);
 
 
 /***/ }),
@@ -27756,15 +27764,39 @@ const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/r
 class HomePageComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.handleSignInClick = (email, password) => {
+            Api_1.default.signIn(email, password)
+                .then((res) => {
+                if (res.status === 200) {
+                    this.props.cookies.set("auth", res.data["data"]["token"]);
+                    this.setState({ signedIn: true });
+                    console.log(this.props.cookies.get("auth"));
+                }
+            });
+        };
+        this.handleLogout = () => {
+            Api_1.default.logout(this.props.cookies.get("auth"))
+                .then((res) => {
+                if (res.status === 200) {
+                    this.setState({ signedIn: false });
+                }
+            });
+        };
+        this.handleArticleClick = (id) => {
+            Api_1.default.read(this.props.cookies.get("auth"), id)
+                .then((res) => {
+                // nothing to do
+            });
+        };
         this.state = {
             articles: [],
-            authToken: this.props.cookies.get("auth"),
+            signedIn: false,
         };
     }
     render() {
         return (React.createElement("div", null,
-            React.createElement(Header_1.default, null),
-            React.createElement(Content_1.default, { articles: this.state.articles, authToken: this.state.authToken })));
+            React.createElement(Header_1.default, { signedIn: this.state.signedIn, onSignedClick: this.handleSignInClick, onLogoutClick: this.handleLogout }),
+            React.createElement(Content_1.default, { articles: this.state.articles, onArticleClick: this.handleArticleClick })));
     }
     componentDidMount() {
         // Get article list

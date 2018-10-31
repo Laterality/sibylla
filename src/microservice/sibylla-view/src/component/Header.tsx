@@ -11,11 +11,12 @@ import Api from "../lib/Api";
 import { AxiosResponse } from "axios";
 
 interface IHeaderComponentProps {
-    cookies: Cookies;
+    signedIn: boolean;
+    onSignedClick: (email: string, password: string) => void;
+    onLogoutClick: () => void;
 }
 
 interface IHeaderComponentState {
-    signedIn: boolean;
     signDialogOpen: boolean;
     currentDialogIndex: number;
 }
@@ -36,13 +37,12 @@ const style = {
     },
 };
 
-class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentState> {
+export default class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentState> {
 
     constructor(props: any) {
         super(props);
 
         this.state = {
-            signedIn: this.props.cookies.get("auth_token") !== undefined,
             signDialogOpen: false,
             currentDialogIndex: 0,
         };
@@ -50,9 +50,10 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
     }
 
     render() {
+        const { props } = this;
         const { state } = this;
         let profileComp;
-        if (!state.signedIn) {
+        if (!props.signedIn) {
             profileComp = <button type="button" 
                 className="btn btn-login my-3 mr-3"
                 onClick={this.handleSignButtonClick}>로그인 / 회원가입</button>;
@@ -146,25 +147,10 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
         if (signInInputEmail === null || signInInputPassword === null) { return; }
         const email = signInInputEmail.value;
         const password = signInInputPassword.value;
-
-        Api.signIn(email, password)
-        .then((res) => {
-            if (res.status === 200) {
-                this.props.cookies.set("auth", res.data["data"]["token"]);
-                this.setState({signedIn: true, signDialogOpen: false});
-                console.log(this.props.cookies.get("auth"));
-            }
-        });
+        this.props.onSignedClick(email, password);
     }
 
     private handleLogoutClick = () => {
-        Api.logout(this.props.cookies.get("auth"))
-        .then((res: AxiosResponse) => {
-            if (res.status === 200) {
-                this.setState({signedIn: false});
-            }
-        });
+        this.props.onLogoutClick();
     }
 }
-
-export default withCookies(HeaderComponent);

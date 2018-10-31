@@ -16,7 +16,7 @@ interface IHomePageComponentProps {
 
 interface IHomePageComponentState {
     articles: Array<Article>;
-    authToken: string;
+    signedIn: boolean;
 }
 
 class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePageComponentState> {
@@ -26,7 +26,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
 
         this.state = {
             articles: [],
-            authToken: this.props.cookies.get("auth"),
+            signedIn: false,
         };
     }
 
@@ -34,10 +34,13 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
 
         return (
             <div>
-                <Header />
+                <Header
+                    signedIn={this.state.signedIn}
+                    onSignedClick={this.handleSignInClick}
+                    onLogoutClick={this.handleLogout}/>
                 <Content
                     articles={this.state.articles}
-                    authToken={this.state.authToken}/>
+                    onArticleClick={this.handleArticleClick}/>
             </div>
         );
     }
@@ -59,6 +62,33 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                     a["images"]));
             }
             this.setState({articles});
+        });
+    }
+
+    private handleSignInClick = (email: string, password: string,) => {
+        Api.signIn(email, password)
+        .then((res) => {
+            if (res.status === 200) {
+                this.props.cookies.set("auth", res.data["data"]["token"]);
+                this.setState({signedIn: true});
+                console.log(this.props.cookies.get("auth"));
+            }
+        });
+    }
+
+    private handleLogout = () => {
+        Api.logout(this.props.cookies.get("auth"))
+        .then((res: AxiosResponse) => {
+            if (res.status === 200) {
+                this.setState({signedIn: false});
+            }
+        });
+    }
+
+    private handleArticleClick = (id: number) => {
+        Api.read(this.props.cookies.get("auth"), id)
+        .then((res: AxiosResponse) => {
+            // nothing to do
         });
     }
 }

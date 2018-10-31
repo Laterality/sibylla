@@ -12,7 +12,7 @@ import { default as Article } from "../lib/Article";
 
 interface IContentComponentProps {
     articles: Array<Article>;
-    authToken: string;
+    onArticleClick: (id: number) => void;
 }
 
 export default class ContentComponent extends React.Component<IContentComponentProps> {
@@ -49,9 +49,6 @@ export default class ContentComponent extends React.Component<IContentComponentP
 
     private handleArticleClick = (id: number) => {
         console.log("article clicked: " + id);
-        Api.read(this.props.authToken, id)
-        .then((res: AxiosResponse) => {
-            // nothing to do
-        });
+        this.props.onArticleClick(id);
     }
 }
