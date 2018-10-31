@@ -8,6 +8,7 @@ import SwipeableViews from "react-swipeable-views";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Api from "../lib/Api";
+import { AxiosResponse } from "axios";
 
 interface IHeaderComponentProps {
     cookies: Cookies;
@@ -29,6 +30,9 @@ const style = {
         width: "100%",
         background: "#3e2723",
         color: "#ffffff",
+    },
+    logoutLink: {
+        cursor: "pointer",
     },
 };
 
@@ -53,7 +57,7 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
                 className="btn btn-login my-3 mr-3"
                 onClick={this.handleSignButtonClick}>로그인 / 회원가입</button>;
         } else {
-            profileComp = <img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/>;
+            profileComp = <div><a style={style.logoutLink} onClick={this.handleLogoutClick}>로그아웃</a><img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/></div>;
         }
 
         return (<div id="header">
@@ -149,6 +153,15 @@ class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentS
                 this.props.cookies.set("auth", res.data["data"]["token"]);
                 this.setState({signedIn: true, signDialogOpen: false});
                 console.log(this.props.cookies.get("auth"));
+            }
+        });
+    }
+
+    private handleLogoutClick = () => {
+        Api.logout(this.props.cookies.get("auth"))
+        .then((res: AxiosResponse) => {
+            if (res.status === 200) {
+                this.setState({signedIn: false});
             }
         });
     }
