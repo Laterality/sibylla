@@ -66,7 +66,7 @@ class ArticleApiController {
         val reads = readService.getByUserId(authTokenDto.userId, 3)
         // get article similarity
         val retrofit = Retrofit.Builder()
-                .baseUrl("http://altair.latera.kr/sb/api/prophet")
+                .baseUrl("http://altair.latera.kr/sb/api/prophet/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
