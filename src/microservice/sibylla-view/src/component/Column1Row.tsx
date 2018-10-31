@@ -7,6 +7,7 @@ import { default as Article } from "../lib/Article";
 
 interface IColumn1RowComponentProps {
     article: Article;
+    onClick?: (id: number) => void;
 }
 
 export default class Column1RowComponent extends React.Component<IColumn1RowComponentProps> {

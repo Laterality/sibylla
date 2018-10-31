@@ -12,10 +12,33 @@ export default class Api {
         return Axios.get(`${Api.BASE_URL}/article/by-id/${id}`);
     }
 
+    static readonly signUp = (email: string, pw: string) => {
+        return Axios.post(`${Api.BASE_URL}`, {
+            email,
+            password: pw,
+        });
+    }
+
     static readonly signIn = (email: string, password: string): AxiosPromise => {
         return Axios.post(`${Api.BASE_URL}/auth/login`, {
             email,
             password,
+        });
+    }
+
+    static readonly logout = (auth: string): AxiosPromise => {
+        return Axios.get(`${Api.BASE_URL}/auth/logout`, {
+            headers: {
+                Authorization: `Bearer ${auth}`,
+            },
+        });
+    }
+
+    static readonly read = (auth: string): AxiosPromise => {
+        return Axios.get(`${Api.BASE_URL}/article/read`, {
+            headers: {
+                Authorization: `Bearer ${auth}`,
+            }
         });
     }
 }

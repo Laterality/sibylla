@@ -8,6 +8,7 @@ import { default as Article } from "../lib/Article";
 interface IColumn2RowProps {
     article1: Article;
     article2: Article;
+    onClick?: (id: number) => void;
 }
 
 export default class Column2RowComponent extends React.Component<IColumn2RowProps> {
