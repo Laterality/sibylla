@@ -41,7 +41,7 @@ class AuthServiceImpl : AuthService {
 
         val match = BCrypt.checkpw(password, user.password)
         val dao = AuthTokenDao(dataSource)
-        val tokenId = dao.insert(AuthTokenInsertDto(user.id, "INVALID"))
+        var tokenId = dao.selectByUserId(user.id)?.id ?: dao.insert(AuthTokenInsertDto(user.id, "INVALID"))
         val token = AuthUtil.generateToken(privKeyPath, issuer, "user/" + user.id, from, tokenId.toString())
         val now = Date()
         dao.update(AuthTokenDto(tokenId, user.id, token, now, now))
