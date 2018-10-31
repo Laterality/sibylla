@@ -27362,11 +27362,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 const Column1Row_1 = __importDefault(__webpack_require__(/*! ./Column1Row */ "./src/component/Column1Row.tsx"));
 const Column2Row_1 = __importDefault(__webpack_require__(/*! ./Column2Row */ "./src/component/Column2Row.tsx"));
+const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 class ContentComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.handleArticleClick = (id) => {
+            console.log("article clicked: " + id);
+            Api_1.default.read(this.props.cookies.get("auth"))
+                .then((res) => {
+                // nothing to do
+            });
+        };
     }
     render() {
         const { articles } = this.props;
@@ -27377,10 +27386,10 @@ class ContentComponent extends React.Component {
             const a = articles[i];
             switch (t % 2) {
                 case 0:
-                    articleComponents.push(React.createElement(Column1Row_1.default, { article: a, key: a.id }));
+                    articleComponents.push(React.createElement(Column1Row_1.default, { article: a, key: a.id, onClick: this.handleArticleClick }));
                     break;
                 case 1:
-                    articleComponents.push(React.createElement(Column2Row_1.default, { article1: articles[i], article2: articles[++i], key: a.id }));
+                    articleComponents.push(React.createElement(Column2Row_1.default, { article1: articles[i], article2: articles[++i], key: a.id, onClick: this.handleArticleClick }));
                     break;
             }
             t++;
@@ -27388,7 +27397,7 @@ class ContentComponent extends React.Component {
         return (React.createElement("div", { id: "content" }, articleComponents));
     }
 }
-exports.default = ContentComponent;
+exports.default = react_cookie_1.withCookies(ContentComponent);
 
 
 /***/ }),
@@ -27433,6 +27442,9 @@ const style = {
         background: "#3e2723",
         color: "#ffffff",
     },
+    logoutLink: {
+        cursor: "pointer",
+    },
 };
 class HeaderComponent extends react_1.Component {
     constructor(props) {
@@ -27463,6 +27475,14 @@ class HeaderComponent extends react_1.Component {
                 }
             });
         };
+        this.handleLogoutClick = () => {
+            Api_1.default.logout(this.props.cookies.get("auth"))
+                .then((res) => {
+                if (res.status === 200) {
+                    this.setState({ signedIn: false });
+                }
+            });
+        };
         this.state = {
             signedIn: this.props.cookies.get("auth_token") !== undefined,
             signDialogOpen: false,
@@ -27476,7 +27496,9 @@ class HeaderComponent extends react_1.Component {
             profileComp = React.createElement("button", { type: "button", className: "btn btn-login my-3 mr-3", onClick: this.handleSignButtonClick }, "\uB85C\uADF8\uC778 / \uD68C\uC6D0\uAC00\uC785");
         }
         else {
-            profileComp = React.createElement("img", { src: "./img/baseline_person_white_24dp.png", alt: "user profile image", className: "profile-img" });
+            profileComp = React.createElement("div", null,
+                React.createElement("a", { style: style.logoutLink, onClick: this.handleLogoutClick }, "\uB85C\uADF8\uC544\uC6C3"),
+                React.createElement("img", { src: "./img/baseline_person_white_24dp.png", alt: "user profile image", className: "profile-img" }));
         }
         return (React.createElement("div", { id: "header" },
             React.createElement("img", { src: "./img/Logo_with_Typography.svg", alt: "logo", className: "logo" }),
@@ -27550,10 +27572,30 @@ Api.retrieveArticles = (limit = 20) => {
 Api.retrieveArticle = (id) => {
     return axios_1.default.get(`${Api.BASE_URL}/article/by-id/${id}`);
 };
+Api.signUp = (email, pw) => {
+    return axios_1.default.post(`${Api.BASE_URL}`, {
+        email,
+        password: pw,
+    });
+};
 Api.signIn = (email, password) => {
     return axios_1.default.post(`${Api.BASE_URL}/auth/login`, {
         email,
         password,
+    });
+};
+Api.logout = (auth) => {
+    return axios_1.default.get(`${Api.BASE_URL}/auth/logout`, {
+        headers: {
+            Authorization: `Bearer ${auth}`,
+        },
+    });
+};
+Api.read = (auth) => {
+    return axios_1.default.get(`${Api.BASE_URL}/article/read`, {
+        headers: {
+            Authorization: `Bearer ${auth}`,
+        }
     });
 };
 exports.default = Api;
