@@ -27791,6 +27791,9 @@ class HomePageComponent extends React.Component {
             });
         };
         this.handleArticleClick = (id) => {
+            if (!this.state.signedIn) {
+                return;
+            }
             if (!this.props.cookies) {
                 return;
             }

@@ -86,6 +86,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 
     private handleArticleClick = (id: number) => {
+        if (!this.state.signedIn) { return; }
         if (!this.props.cookies) { return; }
         Api.read(this.props.cookies.get("auth"), id)
         .then((res: AxiosResponse) => {
