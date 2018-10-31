@@ -92,8 +92,11 @@ class ArticleApiController {
 
         return ResponseDto("ok",
                 "",
+                if (sorted.size > 1) {
                 sorted.subList(0,
-                        if (sorted.size > 100 ) { 100 } else { sorted.size -1 }))
+                        if (sorted.size > 100 ) { 100 } else { sorted.size -1 }) } else {
+                    ArrayList()
+                })
     }
 
     @GetMapping("/read")
