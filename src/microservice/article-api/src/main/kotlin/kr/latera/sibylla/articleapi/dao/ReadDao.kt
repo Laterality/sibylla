@@ -13,7 +13,7 @@ class ReadDao(dataSource: DataSource) {
 
     private val jdbc = NamedParameterJdbcTemplate(dataSource)
     private val insertAction = SimpleJdbcInsert(dataSource)
-            .withTableName("read")
+            .withTableName("read_article")
             .usingGeneratedKeyColumns("id")
             .usingColumns("article_id", "reader_id")
 
