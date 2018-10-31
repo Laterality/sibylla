@@ -96,9 +96,14 @@ class ArticleApiController {
                         if (sorted.size > 100 ) { 100 } else { sorted.size -1 }))
     }
 
-    @PostMapping("/read")
-    fun registerRead(readInsertDto: ReadInsertDto): ResponseDto<Any> {
-        readService.add(readInsertDto)
+    @GetMapping("/read")
+    fun registerRead(@RequestParam("articleId") articleId: Long,
+                     request: HttpServletRequest): ResponseDto<Any> {
+        val token = request.getHeader("Authorization")?.split(" ")?.get(1) ?:
+            return ResponseDto("fail", "Invalid authorization header", null)
+        val auth = authTokenService.getByToken(token) ?:
+            return ResponseDto("fail", "Authorization info doesn't exist", null)
+        readService.add(ReadInsertDto(articleId, auth.userId))
 
         return ResponseDto("ok","", null)
     }
