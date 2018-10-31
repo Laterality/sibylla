@@ -51,7 +51,7 @@ class ReadDao(dataSource: DataSource) {
         companion object {
             const val SELECT_BY_USER_ID =
                     "SELECT id, article_id, reader_id, reg_date, mod_date\n" +
-                            "FROM read\n" +
+                            "FROM read_article\n" +
                             "WHERE reader_id=:readerId\n" +
                             "ORDER BY reg_date\n" +
                             "LIMIT :topn;"
