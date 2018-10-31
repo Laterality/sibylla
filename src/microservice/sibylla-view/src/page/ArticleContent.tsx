@@ -1,17 +1,14 @@
 import * as React from "react";
-import * as ReactRouter from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import * as qs from "querystring";
 import { AxiosResponse } from "axios";
-import { withCookies, Cookies } from "react-cookie";
+import { withCookies, Cookies, ReactCookieProps } from "react-cookie";
 
 import { default as Api } from "../lib/Api";
 import Article from "../lib/Article";
 import Header from "../component/Header";
 
-interface IArticleContentPageComponentProps {
-    location: Location;
-    cookies: Cookies;
-}
+interface IArticleContentPageComponentProps extends RouteComponentProps, ReactCookieProps { }
 
 interface IArticleContentPageComponentState {
     article: Article;
@@ -82,6 +79,7 @@ class ArticleContentPageComponent extends React.Component<IArticleContentPageCom
         Api.signIn(email, password)
         .then((res) => {
             if (res.status === 200) {
+                if (!this.props.cookies) { return; }
                 this.props.cookies.set("auth", res.data["data"]["token"]);
                 this.setState({signedIn: true});
                 console.log(this.props.cookies.get("auth"));
@@ -90,6 +88,7 @@ class ArticleContentPageComponent extends React.Component<IArticleContentPageCom
     }
 
     private handleLogout = () => {
+        if (!this.props.cookies) { return; }
         Api.logout(this.props.cookies.get("auth"))
         .then((res: AxiosResponse) => {
             if (res.status === 200) {
@@ -97,13 +96,6 @@ class ArticleContentPageComponent extends React.Component<IArticleContentPageCom
             }
         });
     }
-
-    private handleArticleClick = (id: number) => {
-        Api.read(this.props.cookies.get("auth"), id)
-        .then((res: AxiosResponse) => {
-            // nothing to do
-        });
-    }
 }
 
-export default withCookies(ArticleContentPageComponent);
+export default withRouter(withCookies(ArticleContentPageComponent));

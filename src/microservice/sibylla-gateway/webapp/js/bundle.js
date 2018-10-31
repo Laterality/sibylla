@@ -27656,6 +27656,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const qs = __importStar(__webpack_require__(/*! querystring */ "./C:/Users/Jinwoo Shin/AppData/Roaming/npm/node_modules/webpack/node_modules/querystring-es3/index.js"));
 const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
@@ -27673,6 +27674,9 @@ class ArticleContentPageComponent extends React.Component {
             Api_1.default.signIn(email, password)
                 .then((res) => {
                 if (res.status === 200) {
+                    if (!this.props.cookies) {
+                        return;
+                    }
                     this.props.cookies.set("auth", res.data["data"]["token"]);
                     this.setState({ signedIn: true });
                     console.log(this.props.cookies.get("auth"));
@@ -27680,17 +27684,14 @@ class ArticleContentPageComponent extends React.Component {
             });
         };
         this.handleLogout = () => {
+            if (!this.props.cookies) {
+                return;
+            }
             Api_1.default.logout(this.props.cookies.get("auth"))
                 .then((res) => {
                 if (res.status === 200) {
                     this.setState({ signedIn: false });
                 }
-            });
-        };
-        this.handleArticleClick = (id) => {
-            Api_1.default.read(this.props.cookies.get("auth"), id)
-                .then((res) => {
-                // nothing to do
             });
         };
         this.state = {
@@ -27730,7 +27731,7 @@ class ArticleContentPageComponent extends React.Component {
                 React.createElement("p", { className: "my-3", style: style.content }, article.content))));
     }
 }
-exports.default = react_cookie_1.withCookies(ArticleContentPageComponent);
+exports.default = react_router_dom_1.withRouter(react_cookie_1.withCookies(ArticleContentPageComponent));
 
 
 /***/ }),
@@ -27756,6 +27757,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(__webpack_require__(/*! react */ "react"));
+const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
 const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
@@ -27768,6 +27770,9 @@ class HomePageComponent extends React.Component {
             Api_1.default.signIn(email, password)
                 .then((res) => {
                 if (res.status === 200) {
+                    if (!this.props.cookies) {
+                        return;
+                    }
                     this.props.cookies.set("auth", res.data["data"]["token"]);
                     this.setState({ signedIn: true });
                     console.log(this.props.cookies.get("auth"));
@@ -27775,6 +27780,9 @@ class HomePageComponent extends React.Component {
             });
         };
         this.handleLogout = () => {
+            if (!this.props.cookies) {
+                return;
+            }
             Api_1.default.logout(this.props.cookies.get("auth"))
                 .then((res) => {
                 if (res.status === 200) {
@@ -27783,6 +27791,9 @@ class HomePageComponent extends React.Component {
             });
         };
         this.handleArticleClick = (id) => {
+            if (!this.props.cookies) {
+                return;
+            }
             Api_1.default.read(this.props.cookies.get("auth"), id)
                 .then((res) => {
                 // nothing to do
@@ -27810,7 +27821,7 @@ class HomePageComponent extends React.Component {
         });
     }
 }
-exports.default = react_cookie_1.withCookies(HomePageComponent);
+exports.default = react_router_dom_1.withRouter(react_cookie_1.withCookies(HomePageComponent));
 
 
 /***/ }),

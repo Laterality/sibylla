@@ -1,5 +1,6 @@
 import * as React from "react";
 import { AxiosResponse } from "axios";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
 import { default as Api } from "../lib/Api";
 
@@ -7,12 +8,9 @@ import { default as Article } from "../lib/Article";
 
 import { default as Header } from "../component/Header";
 import { default as Content } from "../component/Content";
-import { withCookies, Cookies } from "react-cookie";
+import { withCookies, ReactCookieProps } from "react-cookie";
 
-interface IHomePageComponentProps {
-    location: Location;
-    cookies: Cookies;
-}
+interface IHomePageComponentProps extends RouteComponentProps, ReactCookieProps{ }
 
 interface IHomePageComponentState {
     articles: Array<Article>;
@@ -69,6 +67,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
         Api.signIn(email, password)
         .then((res) => {
             if (res.status === 200) {
+                if (!this.props.cookies) { return; }
                 this.props.cookies.set("auth", res.data["data"]["token"]);
                 this.setState({signedIn: true});
                 console.log(this.props.cookies.get("auth"));
@@ -77,6 +76,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 
     private handleLogout = () => {
+        if (!this.props.cookies) { return; }
         Api.logout(this.props.cookies.get("auth"))
         .then((res: AxiosResponse) => {
             if (res.status === 200) {
@@ -86,6 +86,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 
     private handleArticleClick = (id: number) => {
+        if (!this.props.cookies) { return; }
         Api.read(this.props.cookies.get("auth"), id)
         .then((res: AxiosResponse) => {
             // nothing to do
@@ -93,4 +94,4 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 }
 
-export default withCookies(HomePageComponent);
+export default withRouter(withCookies(HomePageComponent));
