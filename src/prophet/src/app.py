@@ -5,6 +5,8 @@ import train as tr
 
 app = flask.Flask(__name__)
 model = util.load_model()
+if model is None:
+    print("doc2vec model is not loaded")
 
 
 class TrainThread(threading.Thread):
@@ -24,7 +26,12 @@ class TrainThread(threading.Thread):
 def get_similarity():
     article_1 = flask.request.args.get("article1")
     article_2 = flask.request.args.get("article2")
-    similarity = model.docvecs.similarity("article-%s" % article_1, "article-%s" % article_2)
+
+    article1 = util.fetch(article_1)
+    article2 = util.fetch(article_2)
+    tokens = util.tokenize([article1[1], article2[1]])
+    similarity = str(model.docvecs.similarity_unseen_docs(model, tokens[0], tokens[1]))
+
     return flask.jsonify(
         result="ok",
         similarity=str(similarity)
@@ -34,13 +41,16 @@ def get_similarity():
 @app.route("/get-similarities", methods=["GET"])
 def get_similarities():
     comparison = flask.request.args.get("article")
-    recent_article_ids = util.fetch_top_100()
+    ctoken = util.tokenize([util.fetch(comparison)[1]])
 
-    similarities = [str(model.docvecs.similarity("article-%s" % comparison, "article-%s" % aid))
-                    for aid in recent_article_ids]
+    recent_articles = util.fetch_top_100()
+    tokens = util.tokenize([a[1] for a in recent_articles])
+
+    similarities = [str(model.docvecs.similarity_unseen_docs(model, ctoken[0], token))
+                    for token in tokens]
     return flask.jsonify(
         result="ok",
-        articleIds=recent_article_ids,
+        articleIds=[a[0] for a in recent_articles],
         similarities=similarities
     )
 

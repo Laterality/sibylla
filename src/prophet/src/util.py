@@ -24,12 +24,19 @@ def fetch_untrained_data():
 
 
 def fetch_top_100():
-    query = "SELECT id FROM article ORDER BY written_date LIMIT 100;"
+    query = "SELECT id, content FROM article ORDER BY written_date LIMIT 100;"
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
         conn.execute(query)
         result = conn.fetchall()
-        data = [c[0] for c in result]
-        return data
+        return result
+
+
+def fetch(id):
+    query = "SELECT id, content from article where id = %s order by written_date;"
+    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
+        conn.execute(query, id)
+        result = conn.fetchone()
+        return result
 
 
 def set_trained(ids):
