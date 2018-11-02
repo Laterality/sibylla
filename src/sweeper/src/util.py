@@ -39,7 +39,7 @@ def post(article, source_name):
     res = requests.post(url=REST_URL, data=json.dumps(data), headers=headers)
 
     if res.status_code != 201:
-        print("Request not handled, url: %s" % article.url)
+        print("[%s] Request not handled, url: %s" % (res.status_code, article.url))
 
 
 def send_webhook():
