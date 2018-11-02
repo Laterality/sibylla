@@ -53,14 +53,18 @@ def get_similarity():
 
 @app.route("/get-similarities", methods=["GET"])
 def get_similarities():
-    comparison = flask.request.args.get("article")
+    comparison = int(flask.request.args.get("article"))
     ctoken = util.tokenize([util.fetch(comparison)[1]])
 
-    recent_articles = util.fetch_top_100()
-    tokens = util.tokenize([a[1] for a in recent_articles])
+    recent_articles = util.fetch_top_100(comparison)
 
-    similarities = [str(model.docvecs.similarity_unseen_docs(model, ctoken[0], token))
-                    for token in tokens]
+    similarities = []
+    for a in recent_articles:
+        sim = util.fetch_similarity(min(comparison, a[0]), max(comparison, a[0]))
+        if sim is None:
+            sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]]))
+            util.insert_similarity(a, a[0], sim)
+        similarities.append(sim)
 
     check_model()
 

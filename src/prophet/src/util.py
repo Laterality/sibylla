@@ -23,10 +23,10 @@ def fetch_untrained_data():
         return docs, ids
 
 
-def fetch_top_100():
-    query = "SELECT id, content FROM article ORDER BY written_date LIMIT 100;"
+def fetch_top_100(exclude):
+    query = "SELECT id, content FROM article WHERE id != %s ORDER BY written_date LIMIT 100;"
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute(query)
+        conn.execute(query, exclude)
         result = conn.fetchall()
         return result
 
@@ -37,6 +37,26 @@ def fetch(id):
         conn.execute(query, id)
         result = conn.fetchone()
         return result
+
+
+def fetch_similarity(article1_id, article2_id):
+    query = "SELECT similarity FROM similarity WHERE article1_id=%s AND article2_id=%s;"
+    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
+        conn.execute(query, [article1_id, article2_id])
+        result = conn.fetchone()
+        if result is None:
+            return None
+        return result[0]
+
+
+def insert_similarity(article1_id, article2_id, similarity):
+    if article1_id > article2_id:
+        tmp = article1_id
+        article1_id = article2_id
+        article2_id = tmp
+    query = "INSERT INTO similarity(article1_id, article2_id, similarity) VALUES(%s, %s, %s)"
+    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
+        conn.execute(query, [article1_id, article2_id, similarity])
 
 
 def set_trained(ids):
@@ -80,7 +100,7 @@ def tokenize(doc_list):
     mecab = Mecab()
     # okt = Okt()
 
-    stopwords = ["이", "가", "의", "을", "은", "를", "이다", "는", "에", "에서", "로", "으로", "중앙일보", "중부일보",
+    stopwords = ["이", "가", "의", "을", "은", "를", "이다", "는", "에", "에서", "로", "으로", "서소문사진관", "중앙일보", "중부일보",
                  "기자", ".", "·", ",", "'", "(", ")", "\"", "[", "]"]
 
     tokenized = []
