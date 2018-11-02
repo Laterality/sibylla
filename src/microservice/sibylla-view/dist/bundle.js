@@ -27495,7 +27495,6 @@ class HeaderComponent extends react_1.Component {
     }
     render() {
         const { props } = this;
-        const { state } = this;
         let profileComp;
         if (!props.signedIn) {
             profileComp = React.createElement("button", { type: "button", className: "btn btn-login my-3 mr-3", onClick: this.handleSignButtonClick }, "\uB85C\uADF8\uC778 / \uD68C\uC6D0\uAC00\uC785");
@@ -27576,6 +27575,17 @@ Api.retrieveArticles = (limit = 20) => {
 };
 Api.retrieveArticle = (id) => {
     return axios_1.default.get(`${Api.BASE_URL}/article/by-id/${id}`);
+};
+Api.retrieveRecommends = (auth) => {
+    return axios_1.default.get(`${Api.BASE_URL}/articles/recommends`, {
+        headers: {
+            Authorization: `Bearer ${auth}`,
+        },
+    });
+};
+Api.retrieveArticlesWithIds = (ids) => {
+    const param = ids.join(",");
+    return axios_1.default.get(`${Api.BASE_URL}/articles/by-ids?ids=${param}`);
 };
 Api.signUp = (email, pw) => {
     return axios_1.default.post(`${Api.BASE_URL}`, {
@@ -27818,14 +27828,28 @@ class HomePageComponent extends React.Component {
     }
     componentDidMount() {
         // Get article list
-        Api_1.default.retrieveArticles(21)
-            .then((res) => {
-            const articles = [];
-            for (let a of res.data["articles"]) {
-                articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"]));
-            }
-            this.setState({ articles });
-        });
+        if (this.state.signedIn && this.props.cookies) {
+            Api_1.default.retrieveRecommends(this.props.cookies.get("auth"))
+                .then((res) => {
+                const ids = res.data["data"].map((obj) => obj["id"]);
+                Api_1.default.retrieveArticlesWithIds(ids)
+                    .then((res) => {
+                    const articles = res.data["data"]
+                        .map((obj) => new Article_1.default(obj["id"], obj["title"], obj["content"], obj["sourceName"], new Date(obj["writtenDate"]), obj["url"], obj["images"]));
+                    this.setState({ articles });
+                });
+            });
+        }
+        else {
+            Api_1.default.retrieveArticles(21)
+                .then((res) => {
+                const articles = [];
+                for (let a of res.data["articles"]) {
+                    articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"]));
+                }
+                this.setState({ articles });
+            });
+        }
     }
 }
 exports.default = react_router_dom_1.withRouter(react_cookie_1.withCookies(HomePageComponent));

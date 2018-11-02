@@ -49,22 +49,45 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
 
     componentDidMount() {
         // Get article list
-        Api.retrieveArticles(21)
-        .then((res: AxiosResponse) => {
-            const articles = [];
+        if (this.state.signedIn && this.props.cookies) {
+            Api.retrieveRecommends(this.props.cookies.get("auth"))
+            .then((res: AxiosResponse) => {
+                const ids = res.data["data"].map((obj: any) => obj["id"]);
+                
+                Api.retrieveArticlesWithIds(ids)
+                .then((res: AxiosResponse) => {
+                    const articles = res.data["data"]
+                    .map((obj: any) => new Article(
+                        obj["id"],
+                        obj["title"],
+                        obj["content"],
+                        obj["sourceName"],
+                        new Date(obj["writtenDate"]),
+                        obj["url"],
+                        obj["images"]
+                    ));
 
-            for (let a of res.data["articles"]) {
-                articles.push(new Article(
-                    a["id"], 
-                    a["title"],
-                    a["content"],
-                    a["sourceName"],
-                    new Date(a["writtenDate"]),
-                    a["url"],
-                    a["images"]));
-            }
-            this.setState({articles});
-        });
+                    this.setState({articles});
+                });
+            });
+        } else {
+            Api.retrieveArticles(21)
+            .then((res: AxiosResponse) => {
+                const articles = [];
+    
+                for (let a of res.data["articles"]) {
+                    articles.push(new Article(
+                        a["id"], 
+                        a["title"],
+                        a["content"],
+                        a["sourceName"],
+                        new Date(a["writtenDate"]),
+                        a["url"],
+                        a["images"]));
+                }
+                this.setState({articles});
+            });
+        }
     }
 
     private handleSignInClick = (email: string, password: string,) => {
