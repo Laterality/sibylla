@@ -21,12 +21,18 @@ class TrainThread(threading.Thread):
         self.model = util.create_model()
 
     def run(self):
+        global should_model_change
+
         tr.train(model, self.docs, self.labels)
         util.set_trained(self.labels)
         should_model_change = True
 
 
 def check_model():
+    global should_model_change
+    global model
+    global new_model
+
     if should_model_change:
         model = new_model
         new_model = None
@@ -35,6 +41,8 @@ def check_model():
 
 @app.route("/get-similarity", methods=["GET"])
 def get_similarity():
+    global model
+
     article_1 = flask.request.args.get("article1")
     article_2 = flask.request.args.get("article2")
 
@@ -53,6 +61,8 @@ def get_similarity():
 
 @app.route("/get-similarities", methods=["GET"])
 def get_similarities():
+    global model
+
     comparison = int(flask.request.args.get("article"))
     ctoken = util.tokenize([util.fetch(comparison)[1]])
 
