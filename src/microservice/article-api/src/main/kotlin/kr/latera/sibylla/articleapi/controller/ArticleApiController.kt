@@ -86,7 +86,7 @@ class ArticleApiController {
 
         val service = retrofit.create(ProphetService::class.java)
 
-        var similarities = ArrayList<ArticleSimilarityPair>()
+        var similarities = HashMap<Long, ArticleSimilarityPair>()
 
         for (read in reads) {
             val call = service.getSimilarities(read.articleId)
@@ -95,7 +95,8 @@ class ArticleApiController {
                 val body = res.body() ?: continue
 
                 for (i in body.articleIds.indices) {
-                    similarities.add(ArticleSimilarityPair(body.articleIds[i], body.similarities[i].toDouble()))
+                    similarities[body.articleIds[i]] = ArticleSimilarityPair(body.articleIds[i],
+                            body.similarities[i].toDouble())
                 }
             }
         }
