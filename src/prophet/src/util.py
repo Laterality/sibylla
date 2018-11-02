@@ -45,7 +45,7 @@ def set_trained(ids):
         conn.executemany(query, ids)
 
 
-def load_model():
+def create_model():
     # doc2vec parameters
     # used only when model is created newly
     vector_size = 300
@@ -53,16 +53,20 @@ def load_model():
     sampling_threshold = 1e-15
     worker_count = multiprocessing.cpu_count()
 
+    return gensim.models.Doc2Vec(
+        vector_size=vector_size,
+        window_size=window_size,
+        worker_count=worker_count,
+        sampling_threshold=sampling_threshold, )
+
+
+def load_model():
     model_path = os.environ.get("MODEL_PATH")
     if model_path is None:
         return None
 
     if not os.path.isfile(model_path):
-        return gensim.models.Doc2Vec(
-            vector_size=vector_size,
-            window_size=window_size,
-            worker_count=worker_count,
-            sampling_threshold=sampling_threshold,)
+        return create_model()
 
     return gensim.models.doc2vec.Doc2Vec.load(model_path)
 
