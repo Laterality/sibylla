@@ -28,6 +28,3 @@ def crawl():
     return flask.jsonify(
         result="ok"
     )
-
-
-
