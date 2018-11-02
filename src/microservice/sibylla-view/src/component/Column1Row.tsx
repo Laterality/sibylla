@@ -17,7 +17,7 @@ export default class Column1RowComponent extends React.Component<IColumn1RowComp
         const link = `./article?id=${article.id}`;
 
         const img = {
-            backgroundImage: "url(" + article.images[0].src + ")"
+            backgroundImage: `url(${article.images[0]? article.images[0].src : "./img/x-box.svg"})`
         }
         return(<div className="column-1-article article-card row">
             <div style={img} className="article-cover col-7"></div>

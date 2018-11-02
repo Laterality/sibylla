@@ -89,7 +89,13 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                         a["sourceName"],
                         new Date(a["writtenDate"]),
                         a["url"],
-                        a["images"]));
+                        a["images"].map((img: any) => 
+                            new ArticleImage(
+                                img["id"],
+                                img["articleId"],
+                                img["src"],
+                                img["regDate"],
+                                img["modDate"]))));
                 }
                 this.setState({articles});
             });

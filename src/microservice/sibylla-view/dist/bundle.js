@@ -27277,7 +27277,7 @@ class Column1RowComponent extends React.Component {
         const { article } = this.props;
         const link = `./article?id=${article.id}`;
         const img = {
-            backgroundImage: "url(" + article.images[0].src + ")"
+            backgroundImage: `url(${article.images[0] ? article.images[0].src : "./img/x-box.svg"})`
         };
         return (React.createElement("div", { className: "column-1-article article-card row" },
             React.createElement("div", { style: img, className: "article-cover col-7" }),
@@ -27337,10 +27337,10 @@ class Column2RowComponent extends React.Component {
         const link1 = `./article?id=${article1.id}`;
         const link2 = `./article?id=${article2.id}`;
         const img1 = {
-            backgroundImage: `url(${article1.images[0].src})`
+            backgroundImage: `url(${article1.images[0] ? article1.images[0].src : "./img/x-box.svg"})`
         };
         const img2 = {
-            backgroundImage: `url(${article2.images[0].src})`
+            backgroundImage: `url(${article2.images[0] ? article2.images[0].src : "./img/x-box.svg"})`
         };
         return (React.createElement("div", { className: "my-4 column-2-article row justify-content-between" },
             React.createElement("div", { className: "col-5 article-card" },
@@ -27870,7 +27870,7 @@ class HomePageComponent extends React.Component {
                 .then((res) => {
                 const articles = [];
                 for (let a of res.data["articles"]) {
-                    articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"]));
+                    articles.push(new Article_1.default(a["id"], a["title"], a["content"], a["sourceName"], new Date(a["writtenDate"]), a["url"], a["images"].map((img) => new ArticleImage_1.default(img["id"], img["articleId"], img["src"], img["regDate"], img["modDate"]))));
                 }
                 this.setState({ articles });
             });

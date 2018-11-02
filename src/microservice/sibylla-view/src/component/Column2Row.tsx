@@ -21,11 +21,11 @@ export default class Column2RowComponent extends React.Component<IColumn2RowProp
         const link1 = `./article?id=${article1.id}`;
         const link2 = `./article?id=${article2.id}`;
         const img1 = {
-            backgroundImage: `url(${article1.images[0].src})`
+            backgroundImage: `url(${article1.images[0]? article1.images[0].src : "./img/x-box.svg"})`
         }
 
         const img2 = {
-            backgroundImage: `url(${article2.images[0].src})`
+            backgroundImage: `url(${article2.images[0]? article2.images[0].src : "./img/x-box.svg"})`
         }
 
         return (<div className="my-4 column-2-article row justify-content-between">
