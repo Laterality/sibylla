@@ -14,9 +14,9 @@ db = "sibylla"
 charset = "utf8"
 
 
-def fetch_untrained_data():
+def fetch_all():
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute("select id, content from article where used_in_train=false")
+        conn.execute("select id, content from article")
         data = conn.fetchall()
         docs = [c[1] for c in data]
         ids = [c[0] for c in data]

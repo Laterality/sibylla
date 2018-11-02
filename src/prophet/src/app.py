@@ -87,7 +87,7 @@ def get_similarities():
 
 @app.route("/train", methods=["GET"])
 def train():
-    docs, ids = util.fetch_untrained_data()
+    docs, ids = util.fetch_all()
 
     TrainThread(docs, ids).start()
 
