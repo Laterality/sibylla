@@ -38,6 +38,13 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.8
+  sweeper:
+    build: ./src/sweeper
+    volumes:
+      - ./src/sweeper:/usr/src/app
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.9
 
 networks:
   sibylla-net:
