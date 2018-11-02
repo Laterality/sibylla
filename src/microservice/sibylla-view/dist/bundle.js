@@ -27644,6 +27644,30 @@ exports.default = Article;
 
 /***/ }),
 
+/***/ "./src/lib/ArticleImage.ts":
+/*!*********************************!*\
+  !*** ./src/lib/ArticleImage.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class ArticleImage {
+    constructor(id, articleId, src, regDate, modDate) {
+        this.id = id;
+        this.articleId = articleId;
+        this.src = src;
+        this.regDate = regDate;
+        this.modDate = modDate;
+    }
+}
+exports.default = ArticleImage;
+
+
+/***/ }),
+
 /***/ "./src/page/ArticleContent.tsx":
 /*!*************************************!*\
   !*** ./src/page/ArticleContent.tsx ***!
@@ -27769,6 +27793,7 @@ const React = __importStar(__webpack_require__(/*! react */ "react"));
 const react_router_dom_1 = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 const Api_1 = __importDefault(__webpack_require__(/*! ../lib/Api */ "./src/lib/Api.ts"));
 const Article_1 = __importDefault(__webpack_require__(/*! ../lib/Article */ "./src/lib/Article.ts"));
+const ArticleImage_1 = __importDefault(__webpack_require__(/*! ../lib/ArticleImage */ "./src/lib/ArticleImage.ts"));
 const Header_1 = __importDefault(__webpack_require__(/*! ../component/Header */ "./src/component/Header.tsx"));
 const Content_1 = __importDefault(__webpack_require__(/*! ../component/Content */ "./src/component/Content.tsx"));
 const react_cookie_1 = __webpack_require__(/*! react-cookie */ "./node_modules/react-cookie/es6/index.js");
@@ -27835,7 +27860,7 @@ class HomePageComponent extends React.Component {
                 Api_1.default.retrieveArticlesWithIds(ids)
                     .then((res) => {
                     const articles = res.data["data"]
-                        .map((obj) => new Article_1.default(obj["id"], obj["title"], obj["content"], obj["sourceName"], new Date(obj["writtenDate"]), obj["url"], obj["images"]));
+                        .map((obj) => new Article_1.default(obj["id"], obj["title"], obj["content"], obj["sourceName"], new Date(obj["writtenDate"]), obj["url"], obj["images"].map((img) => new ArticleImage_1.default(img["id"], img["articleId"], img["src"], img["regDate"], img["modDate"]))));
                     this.setState({ articles });
                 });
             });

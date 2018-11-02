@@ -5,6 +5,7 @@ import { withRouter, RouteComponentProps } from "react-router-dom";
 import { default as Api } from "../lib/Api";
 
 import { default as Article } from "../lib/Article";
+import ArticleImage from "../lib/ArticleImage";
 
 import { default as Header } from "../component/Header";
 import { default as Content } from "../component/Content";
@@ -64,8 +65,13 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                         obj["sourceName"],
                         new Date(obj["writtenDate"]),
                         obj["url"],
-                        obj["images"]
-                    ));
+                        obj["images"].map((img: any) => 
+                            new ArticleImage(
+                                img["id"],
+                                img["articleId"],
+                                img["src"],
+                                img["regDate"],
+                                img["modDate"]))));
 
                     this.setState({articles});
                 });
