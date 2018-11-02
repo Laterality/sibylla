@@ -86,7 +86,7 @@ class ArticleApiController {
 
         val service = retrofit.create(ProphetService::class.java)
 
-        var similarities = HashMap<Long, ArticleSimilarityPair>()
+        val similarities = HashMap<Long, ArticleSimilarityPair>()
 
         for (read in reads) {
             val call = service.getSimilarities(read.articleId)
@@ -101,9 +101,13 @@ class ArticleApiController {
             }
         }
 
+        val list = ArrayList<ArticleSimilarityPair>()
+        for (i in similarities.keys) {
+            list.add(similarities[i] ?: throw Exception("Key is not in Map"))
+        }
         // sort by similarity
         // and return
-        val sorted = similarities.stream().sorted(ArticleSimilarityPair::compareTo).toList()
+        val sorted = list.stream().sorted(ArticleSimilarityPair::compareTo).toList()
 
         return ResponseDto("ok",
                 "",
