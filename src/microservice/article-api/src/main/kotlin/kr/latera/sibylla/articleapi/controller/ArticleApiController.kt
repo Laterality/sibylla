@@ -40,6 +40,20 @@ class ArticleApiController {
         return articleService.selectById(id)
     }
 
+    @GetMapping("/by-ids")
+    fun retrieveArticles(@RequestParam("ids") ids: String): ResponseDto<List<ArticleDto>> {
+        val splitted = ids.split(",")
+        val articles = ArrayList<ArticleDto>()
+
+        for (str in splitted) {
+            val article = articleService.selectById(str.toLong()) ?:
+                    return ResponseDto("fail", "Invalid article id: $str", null)
+            articles.add(article)
+        }
+
+        return ResponseDto("ok", "", articles)
+    }
+
     @GetMapping("/list")
     fun listArticle(@RequestParam("limit") limit: Int?, @RequestParam("after") after: Long?, response: HttpServletResponse): Map<String, Any> {
 
