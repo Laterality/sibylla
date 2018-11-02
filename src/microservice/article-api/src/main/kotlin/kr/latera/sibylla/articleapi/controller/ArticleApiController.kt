@@ -29,7 +29,7 @@ class ArticleApiController {
     @Autowired
     private lateinit var authTokenService: AuthTokenService
 
-    @PostMapping
+    @PostMapping("/register")
     fun registerArticle(@RequestBody body: ArticleInsertDto): Any {
         val insertedId = articleService.addArticle(body)
         return ResponseEntity<Any>(ArticleInsertResponseDto("ok", "", insertedId), HttpStatus.CREATED)
