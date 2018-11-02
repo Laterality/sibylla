@@ -13,7 +13,7 @@ export default class Api {
     }
 
     static readonly retrieveRecommends = (auth: string): AxiosPromise => {
-        return Axios.get(`${Api.BASE_URL}/articles/recommends`, {
+        return Axios.get(`${Api.BASE_URL}/article/recommends`, {
             headers: {
                 Authorization: `Bearer ${auth}`,
             },
@@ -22,7 +22,7 @@ export default class Api {
 
     static readonly retrieveArticlesWithIds = (ids: Array<number>): AxiosPromise => {
         const param = ids.join(",");
-        return Axios.get(`${Api.BASE_URL}/articles/by-ids?ids=${param}`);
+        return Axios.get(`${Api.BASE_URL}/article/by-ids?ids=${param}`);
     }
 
     static readonly signUp = (email: string, pw: string) => {

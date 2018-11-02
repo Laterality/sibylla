@@ -27577,7 +27577,7 @@ Api.retrieveArticle = (id) => {
     return axios_1.default.get(`${Api.BASE_URL}/article/by-id/${id}`);
 };
 Api.retrieveRecommends = (auth) => {
-    return axios_1.default.get(`${Api.BASE_URL}/articles/recommends`, {
+    return axios_1.default.get(`${Api.BASE_URL}/article/recommends`, {
         headers: {
             Authorization: `Bearer ${auth}`,
         },
@@ -27585,7 +27585,7 @@ Api.retrieveRecommends = (auth) => {
 };
 Api.retrieveArticlesWithIds = (ids) => {
     const param = ids.join(",");
-    return axios_1.default.get(`${Api.BASE_URL}/articles/by-ids?ids=${param}`);
+    return axios_1.default.get(`${Api.BASE_URL}/article/by-ids?ids=${param}`);
 };
 Api.signUp = (email, pw) => {
     return axios_1.default.post(`${Api.BASE_URL}`, {
