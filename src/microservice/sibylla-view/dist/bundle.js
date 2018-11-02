@@ -27831,7 +27831,7 @@ class HomePageComponent extends React.Component {
         if (this.state.signedIn && this.props.cookies) {
             Api_1.default.retrieveRecommends(this.props.cookies.get("auth"))
                 .then((res) => {
-                const ids = res.data["data"].map((obj) => obj["id"]);
+                const ids = res.data["data"].map((obj) => obj["articleId"]);
                 Api_1.default.retrieveArticlesWithIds(ids)
                     .then((res) => {
                     const articles = res.data["data"]

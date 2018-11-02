@@ -52,7 +52,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
         if (this.state.signedIn && this.props.cookies) {
             Api.retrieveRecommends(this.props.cookies.get("auth"))
             .then((res: AxiosResponse) => {
-                const ids = res.data["data"].map((obj: any) => obj["id"]);
+                const ids = res.data["data"].map((obj: any) => obj["articleId"]);
                 
                 Api.retrieveArticlesWithIds(ids)
                 .then((res: AxiosResponse) => {
