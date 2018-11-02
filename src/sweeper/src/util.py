@@ -43,7 +43,7 @@ def post(article, source_name):
 
 
 def send_webhook():
-    REST_URL = "http://altair.latera.kr/sb/prophet"
+    REST_URL = "http://altair.latera.kr/sb/api/prophet"
 
     res = requests.get(url=REST_URL + "/train")
     if res.status_code != 200:
