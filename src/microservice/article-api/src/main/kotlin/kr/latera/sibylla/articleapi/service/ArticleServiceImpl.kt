@@ -48,6 +48,11 @@ class ArticleServiceImpl : ArticleService {
         return article
     }
 
+    @Transactional(readOnly=true)
+    override fun selectByUid(uid: String): ArticleDto? {
+        return ArticleDao(dataSource).selectByUid(uid)
+    }
+
     @Transactional(readOnly=false)
     override fun deleteById(articleId: Long): Int {
         return ArticleDao(dataSource).deleteById(articleId)

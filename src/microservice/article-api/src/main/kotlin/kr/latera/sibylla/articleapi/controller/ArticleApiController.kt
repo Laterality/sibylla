@@ -31,6 +31,9 @@ class ArticleApiController {
 
     @PostMapping("/register")
     fun registerArticle(@RequestBody body: ArticleInsertDto): Any {
+        if(articleService.selectByUid(body.uid) != null) {
+            return ResponseEntity<Any>(ArticleInsertResponseDto("ok", "Article duplicates", -1), HttpStatus.OK)
+        }
         val insertedId = articleService.addArticle(body)
         return ResponseEntity<Any>(ArticleInsertResponseDto("ok", "", insertedId), HttpStatus.CREATED)
     }

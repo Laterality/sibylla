@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 import java.util.*
 import javax.sql.DataSource
+import kotlin.collections.HashMap
 
 @Repository
 class ArticleDao(dataSource: DataSource) {
@@ -58,6 +59,17 @@ class ArticleDao(dataSource: DataSource) {
         }
     }
 
+    fun selectByUid(uid: String): ArticleDto? {
+        val params = HashMap<String, String>()
+        params["articleUid"] = uid
+
+        return try {
+            jdbc.queryForObject(ArticleDaoSql.SELECT_BY_UID, params, articleRowMapper)
+        } catch (e: EmptyResultDataAccessException) {
+            null
+        }
+    }
+
     fun selectList(limit: Int): List<ArticleDto> {
         val params = HashMap<String, Int>()
 
@@ -90,6 +102,13 @@ class ArticleDao(dataSource: DataSource) {
                             "WHERE crawled_from.article_id = article.id AND\n" +
                             "\tcrawled_from.source_id = source.id AND\n" +
                             "\tarticle.id=:articleId;"
+
+            const val SELECT_BY_UID =
+                    "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +
+                            "FROM article, source, crawled_from\n" +
+                            "WHERE crawled_from.article_id = article.id AND\n" +
+                            "\tcrawled_from.source_id = source.id AND\n" +
+                            "\tarticle.uid=:articleUid;"
 
             const val SELECT_LIST =
                     "SELECT article.id, uid, title, content, url, written_date, article.reg_date, article.mod_date, name as \"source_name\"\n" +

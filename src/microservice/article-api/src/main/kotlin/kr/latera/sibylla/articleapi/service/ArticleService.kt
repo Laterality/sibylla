@@ -8,6 +8,7 @@ import java.util.*
 interface ArticleService {
     fun addArticle(article: ArticleInsertDto): Long
     fun selectById(articleId: Long): ArticleDto?
+    fun selectByUid(uid: String): ArticleDto?
     fun deleteById(articleId: Long): Int
     fun selectArticles(limit: Int): List<ArticleDto>
     fun selectArticles(limit: Int, after: Date): List<ArticleDto>
