@@ -53,7 +53,7 @@ class ReadDao(dataSource: DataSource) {
                     "SELECT id, article_id, reader_id, reg_date, mod_date\n" +
                             "FROM read_article\n" +
                             "WHERE reader_id=:readerId\n" +
-                            "ORDER BY reg_date ASC\n" +
+                            "ORDER BY reg_date DESC\n" +
                             "LIMIT :topn;"
         }
     }
