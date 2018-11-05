@@ -74,7 +74,7 @@ def get_similarities():
         if sim is None:
             sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
             util.insert_similarity(comparison, a[0], sim.item())
-        similarities.append(sim)
+        similarities.append(str(sim))
 
     check_model()
 
