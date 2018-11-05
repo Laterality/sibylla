@@ -43,6 +43,8 @@ def check_model():
 def get_similarity():
     global model
 
+    check_model()
+
     article_1 = flask.request.args.get("article1")
     article_2 = flask.request.args.get("article2")
 
@@ -50,8 +52,6 @@ def get_similarity():
     article2 = util.fetch(article_2)
     tokens = util.tokenize([article1[1], article2[1]])
     similarity = str(model.docvecs.similarity_unseen_docs(model, tokens[0], tokens[1]))
-
-    check_model()
 
     return flask.jsonify(
         result="ok",
@@ -62,6 +62,8 @@ def get_similarity():
 @app.route("/get-similarities", methods=["GET"])
 def get_similarities():
     global model
+
+    check_model()
 
     comparison = int(flask.request.args.get("article"))
     ctoken = util.tokenize([util.fetch(comparison)[1]])
@@ -76,8 +78,6 @@ def get_similarities():
             util.insert_similarity(comparison, a[0], sim.item())
         similarities.append(str(sim))
 
-    check_model()
-
     return flask.jsonify(
         result="ok",
         articleIds=[a[0] for a in recent_articles],
@@ -90,8 +90,6 @@ def train():
     docs, ids = util.fetch_all()
 
     TrainThread(docs, ids).start()
-
-    check_model()
 
     return flask.jsonify(
         result="ok"
