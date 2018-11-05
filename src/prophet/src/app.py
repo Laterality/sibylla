@@ -71,7 +71,7 @@ def get_similarities():
     recent_articles = util.fetch_top_100(comparison)
     recent_article_ids = [a[0] for a in recent_articles]
 
-    founds, not_founds = util.fetch_with(recent_article_ids)
+    founds, not_founds = util.fetch_with(comparison, recent_article_ids)
     result_ids = [f[0] for f in founds]
 
     similarities = [f[1] for f in founds]
