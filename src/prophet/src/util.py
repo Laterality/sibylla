@@ -39,6 +39,23 @@ def fetch(id):
         return result
 
 
+def fetch_with(comparison, others):
+    query = "select article1_id, article2_id, similarity from similarity where article1_id = %s and article2_id = %s"
+    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
+        founds = []
+        not_founds = []
+        for o in others:
+            args = (min(comparison, o), max(comparison, o))
+            conn.execute(query, args)
+            result = conn.fetchone()
+            if result is None:
+                not_founds.append(o)
+            else:
+                founds.append((o, result[2]))
+
+    return founds, not_founds
+
+
 def fetch_similarity(article1_id, article2_id):
     query = "SELECT similarity FROM similarity WHERE article1_id=%s AND article2_id=%s;"
     with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:

@@ -69,19 +69,24 @@ def get_similarities():
     ctoken = util.tokenize([util.fetch(comparison)[1]])
 
     recent_articles = util.fetch_top_100(comparison)
+    recent_article_ids = [a[0] for a in recent_articles]
 
-    similarities = []
-    for a in recent_articles:
-        # sim = util.fetch_similarity(min(comparison, a[0]), max(comparison, a[0]))
-        # if sim is None:
-        #     sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
-        #     util.insert_similarity(comparison, a[0], sim.item())
+    founds, not_founds = util.fetch_with(recent_article_ids)
+    result_ids = [f[0] for f in founds]
+
+    similarities = [f[1] for f in founds]
+
+    not_found_articles = [a for a in recent_articles if a[0] in not_founds]
+
+    for a in not_found_articles:
         sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
+        util.insert_similarity(comparison, a[0], sim.item())
+        result_ids.append(a[0])
         similarities.append(str(sim))
 
     return flask.jsonify(
         result="ok",
-        articleIds=[a[0] for a in recent_articles],
+        articleIds=result_ids,
         similarities=similarities
     )
 
