@@ -72,10 +72,11 @@ def get_similarities():
 
     similarities = []
     for a in recent_articles:
-        sim = util.fetch_similarity(min(comparison, a[0]), max(comparison, a[0]))
-        if sim is None:
-            sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
-            util.insert_similarity(comparison, a[0], sim.item())
+        # sim = util.fetch_similarity(min(comparison, a[0]), max(comparison, a[0]))
+        # if sim is None:
+        #     sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
+        #     util.insert_similarity(comparison, a[0], sim.item())
+        sim = model.docvecs.similarity_unseen_docs(model, ctoken[0], util.tokenize([a[1]])[0])
         similarities.append(str(sim))
 
     return flask.jsonify(
