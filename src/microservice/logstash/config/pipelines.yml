@@ -78,3 +78,9 @@
 #   Default is path.data/dead_letter_queue
 #
 #   path.dead_letter_queue:
+
+- pipeline.id: article
+  pipeline.workers: 1
+  pipeline.batch.size: 1
+  path.config: "/usr/share/logstash/config/article-pipeline.conf"
+  
