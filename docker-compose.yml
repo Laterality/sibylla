@@ -45,6 +45,24 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.9
+  es-1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      soft: -1
+      hard: -1
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    networks:
+      sibylla-net:
+      ipv4_address: 172.18.0.10
+
+volumes:
+  esdata1:
+    driver: local
 
 networks:
   sibylla-net:
