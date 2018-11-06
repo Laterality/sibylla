@@ -46,7 +46,7 @@ services:
       sibylla-net:
         ipv4_address: 172.18.0.9
   es-1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.2
+    build: ./src/microservice/elasticsearch
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -56,14 +56,17 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - ./src/microservice/elasticsearch/data:/usr/share/elasticsearch/data
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.10
-
-volumes:
-  esdata1:
-    driver: local
+  db-es-river:
+    build: ./src/logstash
+    volumes:
+      - ./src/microservice/logstash/config:/usr/share/logstash/config
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.11
 
 networks:
   sibylla-net:
