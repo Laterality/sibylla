@@ -58,7 +58,7 @@ services:
       - esdata1:/usr/share/elasticsearch/data
     networks:
       sibylla-net:
-      ipv4_address: 172.18.0.10
+        ipv4_address: 172.18.0.10
 
 volumes:
   esdata1:
