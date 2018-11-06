@@ -61,7 +61,7 @@ services:
       sibylla-net:
         ipv4_address: 172.18.0.10
   db-es-river:
-    build: ./src/logstash
+    build: ./src/microservice/logstash
     volumes:
       - ./src/microservice/logstash/config:/usr/share/logstash/config
     networks:
