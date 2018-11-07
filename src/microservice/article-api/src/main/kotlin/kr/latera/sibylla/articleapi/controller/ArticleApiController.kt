@@ -3,9 +3,11 @@ package kr.latera.sibylla.articleapi.controller
 import kr.latera.sibylla.articleapi.dto.*
 import kr.latera.sibylla.articleapi.retrofit.dto.ArticleSimilarityPair
 import kr.latera.sibylla.articleapi.retrofit.dto.GetSimilaritiesResponseDto
+import kr.latera.sibylla.articleapi.retrofit.service.ElasticSearchService
 import kr.latera.sibylla.articleapi.retrofit.service.ProphetService
 import kr.latera.sibylla.articleapi.service.*
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -28,6 +30,9 @@ class ArticleApiController {
     private lateinit var readService: ReadService
     @Autowired
     private lateinit var authTokenService: AuthTokenService
+
+    @Value("\${elasticsearch.uri}")
+    private lateinit var esUrl: String
 
     @PostMapping("/register")
     fun registerArticle(@RequestBody body: ArticleInsertDto): Any {
@@ -133,4 +138,25 @@ class ArticleApiController {
         return ResponseDto("ok","", null)
     }
 
+    @GetMapping("/search")
+    fun search(@RequestParam("q", required = false)query: String?): ResponseEntity<ResponseDto<Any>> {
+        if (query == null) {
+            return ResponseEntity(ResponseDto("fail", "query is required", null), HttpStatus.BAD_REQUEST)
+        }
+
+        val r = Retrofit.Builder()
+                .baseUrl(esUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        val service = r.create(ElasticSearchService::class.java)
+
+        val res = service.searchArticle(query).execute()
+
+        return if (res.isSuccessful) {
+            ResponseEntity(ResponseDto("ok", "", res.body()?.hits), HttpStatus.OK)
+        } else {
+            ResponseEntity(ResponseDto("fail", "Search failed", null), HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
 }
