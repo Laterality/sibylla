@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer
 
 @SpringBootApplication
-class ArticleApiApplication
+class ArticleApiApplication {
+    @Bean
+    fun propertySourcePlaceholderConfiguerer(): PropertySourcesPlaceholderConfigurer {
+        return PropertySourcesPlaceholderConfigurer()
+    }
+}
 
 fun main(args: Array<String>) {
     runApplication<ArticleApiApplication>(*args)
-}
-
-@Bean
-fun propertySourcePlaceholderConfiguerer(): PropertySourcesPlaceholderConfigurer {
-    return PropertySourcesPlaceholderConfigurer()
 }
