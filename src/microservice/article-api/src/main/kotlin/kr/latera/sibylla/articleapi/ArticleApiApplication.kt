@@ -13,6 +13,6 @@ fun main(args: Array<String>) {
 }
 
 @Bean
-fun propertySourcePlaceholderConfiguerer: PropertySourcesPlaceholderConfigurer {
+fun propertySourcePlaceholderConfiguerer(): PropertySourcesPlaceholderConfigurer {
     return PropertySourcesPlaceholderConfigurer()
 }
