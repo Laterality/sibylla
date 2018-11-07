@@ -51,7 +51,6 @@ services:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - TAKE_FILE_OWNERSHIP
     ulimits:
       memlock:
         soft: -1
@@ -64,7 +63,7 @@ services:
   db-es-river:
     build: ./src/microservice/logstash
     volumes:
-      - esdata1:/usr/share/logstash/config
+      - ./src/microservice/logstash/config:/usr/share/logstash/config
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.11
@@ -76,7 +75,3 @@ networks:
       driver: default
       config:
         - subnet: 172.18.0.0/16
-
-volumes:
-  esdata1:
-    driver: local
