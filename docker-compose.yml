@@ -11,7 +11,7 @@ services:
   api-gateway:
     build: ./src/microservice/api-gateway
     volumes:
-      - ./src/microservice/api-gateway/webapp:/usr/src/app
+      - ./src/microservice/api-gateway:/usr/src/app
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.4
