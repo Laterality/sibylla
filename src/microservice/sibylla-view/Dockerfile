@@ -8,6 +8,7 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_8.x | bash \
     && apt-get install nodejs -yq
 RUN npm install -g webpack-cli
+RUN rm -f /etc/nginx/conf.d/default.conf
 CMD nginx && \
     npm install && \
     node node_modules/webpack/bin/webpack.js
