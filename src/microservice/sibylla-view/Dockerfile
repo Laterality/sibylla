@@ -9,4 +9,4 @@ RUN apt-get update -yq \
     && apt-get install nodejs -yq
 RUN npm install -g webpack-cli
 CMD npm install --production && \
-    webpack
+    node node_modules/webpack/bin/webpack.js
