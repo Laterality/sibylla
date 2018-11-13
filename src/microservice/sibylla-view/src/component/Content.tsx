@@ -1,11 +1,7 @@
 import * as React from "react";
-import { default as Axios, AxiosResponse } from "axios";
-import { withCookies, Cookies } from "react-cookie";
 
 import { default as Column1Row } from "./Column1Row";
 import { default as Column2Row } from "./Column2Row";
-
-import { default as Api } from "../lib/Api";
 
 import { default as Article } from "../lib/Article";
 

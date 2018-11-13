@@ -35,6 +35,11 @@ const style = {
     logoutLink: {
         cursor: "pointer",
     },
+    nonSignedInWrapper: {
+        display: "flex",
+        flexDirection: "row" as "row",
+        alignItems: "center",
+    }
 };
 
 export default class HeaderComponent extends Component<IHeaderComponentProps, IHeaderComponentState> {
@@ -57,7 +62,7 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
                 className="btn btn-login my-3 mr-3"
                 onClick={this.handleSignButtonClick}>로그인 / 회원가입</button>;
         } else {
-            profileComp = <div><a style={style.logoutLink} onClick={this.handleLogoutClick}>로그아웃</a><img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/></div>;
+            profileComp = <div style={style.nonSignedInWrapper}><a style={style.logoutLink} onClick={this.handleLogoutClick}>로그아웃</a><img src="./img/baseline_person_white_24dp.png" alt="user profile image" className="profile-img"/></div>;
         }
 
         return (<div id="header">
