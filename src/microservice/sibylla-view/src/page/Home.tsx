@@ -133,4 +133,4 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 }
 
-export default withRouter(withCookies(HomePageComponent));
+export default withRouter(withCookies(HomePageComponent) as any as React.ComponentType<IHomePageComponentProps>);

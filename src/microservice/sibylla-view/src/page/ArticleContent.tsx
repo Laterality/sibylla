@@ -98,4 +98,4 @@ class ArticleContentPageComponent extends React.Component<IArticleContentPageCom
     }
 }
 
-export default withRouter(withCookies(ArticleContentPageComponent));
+export default withRouter(withCookies(ArticleContentPageComponent) as any as React.ComponentType<IArticleContentPageComponentProps>);
