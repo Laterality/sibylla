@@ -8,7 +8,7 @@ import os
 
 host = "172.18.0.12"
 port = 3306
-user = "sibylla_admin"
+user = "root"
 passwd = "testament@@#"
 db = "sibylla"
 charset = "utf8"
