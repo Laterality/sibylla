@@ -1,0 +1,3 @@
+FROM mariadb:10.3
+ENV MYSQL_ROOT_PASSWORD testament@@#
+ENV MYSQL_DATABASE sibylla

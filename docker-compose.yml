@@ -73,6 +73,10 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.11
+  mariadb:
+    build: ./src/mariadb
+    volumes:
+      - ./src/mariadb/data:/var/lib/mysql
 
 networks:
   sibylla-net:
