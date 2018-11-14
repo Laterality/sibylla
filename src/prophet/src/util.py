@@ -15,55 +15,75 @@ charset = "utf8"
 
 
 def fetch_all():
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute("select id, content from article")
-        data = conn.fetchall()
-        docs = [c[1] for c in data]
-        ids = [c[0] for c in data]
-        return docs, ids
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.execute("select id, content from article")
+            data = cur.fetchall()
+            docs = [c[1] for c in data]
+            ids = [c[0] for c in data]
+            return docs, ids
+    finally:
+        conn.close()
 
 
 def fetch_top_100(exclude):
     query = "SELECT id, content FROM article WHERE id != %s ORDER BY written_date LIMIT 100;"
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute(query, exclude)
-        result = conn.fetchall()
-        return result
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, exclude)
+            result = conn.fetchall()
+            return result
+    finally:
+        conn.close()
 
 
 def fetch(id):
     query = "SELECT id, content from article where id = %s order by written_date;"
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute(query, id)
-        result = conn.fetchone()
-        return result
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, id)
+            result = cur.fetchone()
+            return result
+    finally:
+        conn.close()
 
 
 def fetch_with(comparison, others):
     query = "select article1_id, article2_id, similarity from similarity where article1_id = %s and article2_id = %s"
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        founds = []
-        not_founds = []
-        for o in others:
-            args = (min(comparison, o), max(comparison, o))
-            conn.execute(query, args)
-            result = conn.fetchone()
-            if result is None:
-                not_founds.append(o)
-            else:
-                founds.append((o, result[2]))
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            founds = []
+            not_founds = []
+            for o in others:
+                args = (min(comparison, o), max(comparison, o))
+                cur.execute(query, args)
+                result = cur.fetchone()
+                if result is None:
+                    not_founds.append(o)
+                else:
+                    founds.append((o, result[2]))
 
-    return founds, not_founds
+        return founds, not_founds
+    finally:
+        conn.close()
 
 
 def fetch_similarity(article1_id, article2_id):
     query = "SELECT similarity FROM similarity WHERE article1_id=%s AND article2_id=%s;"
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute(query, [article1_id, article2_id])
-        result = conn.fetchone()
-        if result is None:
-            return None
-        return result[0]
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, [article1_id, article2_id])
+            result = cur.fetchone()
+            if result is None:
+                return None
+            return result[0]
+    finally:
+        conn.close()
 
 
 def insert_similarity(article1_id, article2_id, similarity):
@@ -72,14 +92,22 @@ def insert_similarity(article1_id, article2_id, similarity):
         article1_id = article2_id
         article2_id = tmp
     query = "INSERT INTO similarity(article1_id, article2_id, similarity) VALUES(%s, %s, %s)"
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        conn.execute(query, [article1_id, article2_id, similarity])
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.execute(query, [article1_id, article2_id, similarity])
+    finally:
+        conn.close()
 
 
 def set_trained(ids):
-    with pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset) as conn:
-        query = "update article set used_in_train=true where id=%s"
-        conn.executemany(query, ids)
+    query = "update article set used_in_train=true where id=%s"
+    conn = pymysql.connect(host=host, port=port, user=user, password=passwd, db=db, charset=charset)
+    try:
+        with conn.cursor() as cur:
+            cur.executemany(query, ids)
+    finally:
+        conn.close()
 
 
 def create_model():
