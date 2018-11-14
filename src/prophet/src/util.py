@@ -33,7 +33,7 @@ def fetch_top_100(exclude):
     try:
         with conn.cursor() as cur:
             cur.execute(query, exclude)
-            result = conn.fetchall()
+            result = cur.fetchall()
             return result
     finally:
         conn.close()
