@@ -6,7 +6,7 @@ from konlpy.tag import Mecab
 
 import os
 
-host = "altair.latera.kr"
+host = "172.18.0.12"
 port = 3306
 user = "sibylla_admin"
 passwd = "testament@@#"
