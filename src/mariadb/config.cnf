@@ -1,0 +1,5 @@
+[server]
+
+[mysqld]
+character-set-server=utf8
+bind-address=0.0.0.0
