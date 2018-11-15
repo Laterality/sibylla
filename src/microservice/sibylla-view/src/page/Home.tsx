@@ -170,7 +170,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
             Api.searchArticle(value)
             .then((res: AxiosResponse) => {
                 this.props.history.push(Routes.ROUTE_ARTICLES);
-                const aHits: Array<any> = res["data"]["hits"];
+                const aHits: Array<any> = res.data["data"]["hits"];
                 const articles = aHits.map((obj: any) => {
                     // TODO: get sourceName and article images
                     const source = obj["_source"];
