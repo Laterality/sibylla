@@ -4,6 +4,7 @@ import { withRouter, RouteComponentProps, Switch, Route } from "react-router-dom
 import { withCookies, ReactCookieProps } from "react-cookie";
 
 import { default as Api } from "../lib/Api";
+import { default as Routes } from "../lib/Routes";
 
 import { default as Article } from "../lib/Article";
 import ArticleImage from "../lib/ArticleImage";
@@ -46,20 +47,20 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                 
                 <Switch>
                     <Route 
-                        path="/"
+                        path={Routes.ROUTE_HOME}
                         render={() => 
                             <HomeContent
                                 articles={this.state.articles}
                                 onArticleClick={this.handleArticleClick}/>}
                     />
                     <Route 
-                        path="/article"
+                        path={Routes.ROUTE_ARTICLE_CONTENT}
                         render={() => 
                             <ArticleContent 
                                 location={this.props.location}/>}
                     />
                     <Route 
-                        path="/articles"
+                        path={Routes.ROUTE_ARTICLES}
                         render={() => 
                             <Articles
                                 location={this.props.location}
