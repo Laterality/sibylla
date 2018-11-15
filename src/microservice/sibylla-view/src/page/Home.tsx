@@ -23,6 +23,11 @@ interface IHomePageComponentState {
 
 class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePageComponentState> {
 
+    // Time for waiting to judge if input stopped
+    private readonly SEARCH_PATIENCE = 700;
+    
+    private searchTimer: number | null = null;
+
     constructor(props: IHomePageComponentProps) {
         super(props);
         let signedIn = false;
@@ -43,7 +48,8 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                 <Header
                     signedIn={this.state.signedIn}
                     onSignedClick={this.handleSignInClick}
-                    onLogoutClick={this.handleLogout}/>
+                    onLogoutClick={this.handleLogout}
+                    onSearchInputChange={this.handleSearchInputChange}/>
                 
                 <Switch>
                     <Route 
@@ -153,6 +159,32 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
         .then((res: AxiosResponse) => {
             // nothing to do
         });
+    }
+
+    private handleSearchInputChange = (value: string) => {
+        if (value.length === 0) { return; }
+        if (this.searchTimer !== null) {
+            clearTimeout(this.searchTimer);
+        }
+        this.searchTimer = window.setTimeout(() => {
+            Api.searchArticle(value)
+            .then((res: AxiosResponse) => {
+                this.props.history.push(Routes.ROUTE_ARTICLES);
+                const aHits: Array<any> = res["data"]["hits"];
+                const articles = aHits.map((obj: any) => {
+                    // TODO: get sourceName and article images
+                    const source = obj["_source"];
+                    return new Article(
+                        source["id"],
+                        source["title"],
+                        source["content"],
+                        "",
+                        new Date(source["writtenDate"]),
+                        source["url"],
+                        []);
+                });
+            });
+        }, this.SEARCH_PATIENCE);
     }
 }
 

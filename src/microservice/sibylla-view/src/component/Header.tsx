@@ -1,19 +1,17 @@
 import * as React from "react";
 import { Component } from "react";
-import { Cookies, withCookies } from "react-cookie";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import SwipeableViews from "react-swipeable-views";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Api from "../lib/Api";
-import { AxiosResponse } from "axios";
 
 interface IHeaderComponentProps {
     signedIn: boolean;
     onSignedClick: (email: string, password: string) => void;
     onLogoutClick: () => void;
+    onSearchInputChange: (value: string) => void;
 }
 
 interface IHeaderComponentState {
@@ -71,7 +69,8 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
             {/* 검색창 영역 */}
             <div className="search-box-container">
                 <img src="./img/baseline-search-24px.svg" alt="search icon"/>
-                <input type="text" className="search-keyword-input" placeholder="기사 검색"/>
+                <input type="text" className="search-keyword-input" placeholder="기사 검색"
+                onChange={this.handleSearchInput}/>
             </div>
             {/* 사용자 프로필 영역 */}
             {profileComp}
@@ -156,5 +155,9 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
     private handleLogoutClick = () => {
         this.props.onLogoutClick();
+    }
+
+    private handleSearchInput = (evt: any) => {
+        this.handleSearchInput(evt.target.value);
     }
 }

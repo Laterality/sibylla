@@ -54,4 +54,8 @@ export default class Api {
             }
         });
     }
+
+    static readonly searchArticle = (keyword: string): AxiosPromise => {
+        return Axios.get(`${Api.BASE_URL}/article/search?q=${keyword}`);
+    }
 }
