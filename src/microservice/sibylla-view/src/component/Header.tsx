@@ -158,6 +158,6 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
     }
 
     private handleSearchInput = (evt: any) => {
-        this.handleSearchInput(evt.target.value);
+        this.props.onSearchInputChange(evt.target.value);
     }
 }
