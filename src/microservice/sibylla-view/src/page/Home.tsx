@@ -1,6 +1,7 @@
 import * as React from "react";
 import { AxiosResponse } from "axios";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { withRouter, RouteComponentProps, Switch, Route } from "react-router-dom";
+import { withCookies, ReactCookieProps } from "react-cookie";
 
 import { default as Api } from "../lib/Api";
 
@@ -8,8 +9,9 @@ import { default as Article } from "../lib/Article";
 import ArticleImage from "../lib/ArticleImage";
 
 import { default as Header } from "../component/Header";
-import { default as Content } from "../component/Content";
-import { withCookies, ReactCookieProps } from "react-cookie";
+import { default as HomeContent } from "../component/HomeContent";
+import { default as ArticleContent } from "../component/ArticleContent";
+import { default as Articles } from "../component/Articles";
 
 interface IHomePageComponentProps extends RouteComponentProps, ReactCookieProps{ }
 
@@ -41,9 +43,29 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                     signedIn={this.state.signedIn}
                     onSignedClick={this.handleSignInClick}
                     onLogoutClick={this.handleLogout}/>
-                <Content
-                    articles={this.state.articles}
-                    onArticleClick={this.handleArticleClick}/>
+                
+                <Switch>
+                    <Route 
+                        path="/"
+                        render={() => 
+                            <HomeContent
+                                articles={this.state.articles}
+                                onArticleClick={this.handleArticleClick}/>}
+                    />
+                    <Route 
+                        path="/article"
+                        render={() => 
+                            <ArticleContent 
+                                location={this.props.location}/>}
+                    />
+                    <Route 
+                        path="/articles"
+                        render={() => 
+                            <Articles
+                                location={this.props.location}
+                                onArticleClick={this.handleArticleClick}/>}
+                    />
+                </Switch>
             </div>
         );
     }
@@ -102,7 +124,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
         }
     }
 
-    private handleSignInClick = (email: string, password: string,) => {
+    private handleSignInClick = (email: string, password: string) => {
         Api.signIn(email, password)
         .then((res) => {
             if (res.status === 200) {

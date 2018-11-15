@@ -4,7 +4,7 @@ import * as React from "react";
 import * as ReactRouter from "react-router-dom";
 
 import { default as Home } from "./page/Home";
-import { default as ArticleContent } from "./page/ArticleContent";
+import { default as ArticleContent } from "./component/ArticleContent";
 
 export default class App extends React.Component {
 

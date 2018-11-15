@@ -6,12 +6,12 @@ import { default as Column2Row } from "./Column2Row";
 import { default as Article } from "../lib/Article";
 
 
-interface IContentComponentProps {
+interface IHomeContentComponentProps {
     articles: Array<Article>;
     onArticleClick: (id: number) => void;
 }
 
-export default class ContentComponent extends React.Component<IContentComponentProps> {
+export default class HomeContentComponent extends React.Component<IHomeContentComponentProps> {
 
     constructor(props: any) {
         super(props);
