@@ -45,28 +45,26 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                     onSignedClick={this.handleSignInClick}
                     onLogoutClick={this.handleLogout}/>
                 
-                <Switch>
-                    <Route 
-                        path={Routes.ROUTE_HOME}
-                        render={() => 
-                            <HomeContent
-                                articles={this.state.articles}
-                                onArticleClick={this.handleArticleClick}/>}
-                    />
-                    <Route 
-                        path={Routes.ROUTE_ARTICLE_CONTENT}
-                        render={() => 
-                            <ArticleContent 
-                                location={this.props.location}/>}
-                    />
-                    <Route 
-                        path={Routes.ROUTE_ARTICLES}
-                        render={() => 
-                            <Articles
-                                location={this.props.location}
-                                onArticleClick={this.handleArticleClick}/>}
-                    />
-                </Switch>
+                <Route 
+                    path={Routes.ROUTE_HOME}
+                    render={() => 
+                        <HomeContent
+                            articles={this.state.articles}
+                            onArticleClick={this.handleArticleClick}/>}
+                />
+                <Route 
+                    path={Routes.ROUTE_ARTICLE_CONTENT}
+                    render={() => 
+                        <ArticleContent 
+                            location={this.props.location}/>}
+                />
+                <Route 
+                    path={Routes.ROUTE_ARTICLES}
+                    render={() => 
+                        <Articles
+                            location={this.props.location}
+                            onArticleClick={this.handleArticleClick}/>}
+                />
             </div>
         );
     }
