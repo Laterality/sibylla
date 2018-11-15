@@ -46,7 +46,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                     onLogoutClick={this.handleLogout}/>
                 
                 <Route 
-                    path={Routes.ROUTE_HOME}
+                    path={Routes.ROUTE_HOME} exact
                     render={() => 
                         <HomeContent
                             articles={this.state.articles}
