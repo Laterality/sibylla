@@ -18,6 +18,7 @@ interface IHomePageComponentProps extends RouteComponentProps, ReactCookieProps{
 
 interface IHomePageComponentState {
     articles: Array<Article>;
+    searchResults: Array<Article>;
     signedIn: boolean;
 }
 
@@ -37,6 +38,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
 
         this.state = {
             articles: [],
+            searchResults: [],
             signedIn,
         };
     }
@@ -70,7 +72,8 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                         render={() => 
                             <Articles
                                 location={this.props.location}
-                                onArticleClick={this.handleArticleClick}/>}
+                                onArticleClick={this.handleArticleClick}
+                                articles={this.state.searchResults}/>}
                     />
                 </Switch>
             </div>
@@ -162,7 +165,9 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 
     private handleSearchInputChange = (value: string) => {
-        if (value.length === 0) { return; }
+        if (value.length === 0) {
+            this.props.history.push(Routes.ROUTE_HOME);
+        }
         if (this.searchTimer !== null) {
             clearTimeout(this.searchTimer);
         }
@@ -183,6 +188,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                         source["url"],
                         []);
                 });
+                this.setState({searchResults: articles});
             });
         }, this.SEARCH_PATIENCE);
     }

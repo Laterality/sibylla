@@ -2,11 +2,13 @@ import * as React from "react";
 import { Location } from "history";
 
 import { default as Article } from "../lib/Article";
+import ArticleListComponent from "./ArticleList";
 
 
 interface IArticlesComponentProps {
     location: Location;
     onArticleClick: (id: number) => void;
+    articles: Array<Article>;
 }
 
 interface IArticlesComponentState {
@@ -27,7 +29,10 @@ export default class ArticlesComponent extends React.Component<IArticlesComponen
 
     public render() {
         return (<div>
-
+            <ArticleListComponent
+                articles={this.props.articles}
+                onArticleClick={this.props.onArticleClick}
+            />
         </div>);
     }
 

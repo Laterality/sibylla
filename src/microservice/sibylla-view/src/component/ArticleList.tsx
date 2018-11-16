@@ -6,6 +6,7 @@ import { default as ArticleListItem } from "./ArticleListItem";
 
 interface IArticleListComponentProps {
     articles: Array<Article>;
+    onArticleClick: (id: number) => void;
 }
 
 export default class ArticleListComponent extends React.Component<IArticleListComponentProps> {
@@ -13,7 +14,8 @@ export default class ArticleListComponent extends React.Component<IArticleListCo
     render() {
         const { props } = this;
         const items = props.articles.map((v: Article) => {
-            return <ArticleListItem article={v} key={v.id}/>;
+            return <ArticleListItem article={v} key={v.id}
+                onClick={this.props.onArticleClick}/>;
         });
         
         return (<div className="article-list">

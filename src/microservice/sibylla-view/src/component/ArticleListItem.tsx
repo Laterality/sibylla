@@ -4,6 +4,7 @@ import { default as Article } from "../lib/Article";
 
 interface IArticleListItemComponentProps {
     article: Article;
+    onClick: (id: number) => void;
 }
 
 export default class ArticleListItemComponent extends React.Component<IArticleListItemComponentProps> {
@@ -18,7 +19,7 @@ export default class ArticleListItemComponent extends React.Component<IArticleLi
         const writtenDateStr = `${dspYear? writtenDate.getUTCFullYear() + ". " : ""}${dspMonthDay? writtenDate.getMonth() + ". " + writtenDate.getUTCDate() + ". " : ""}${writtenDate.getUTCHours()}:${writtenDate.getUTCMinutes()}`;
         
         return (<div className="article-list-item">
-            <h2>{props.article.title}</h2>
+            <h2 onClick={() => this.props.onClick(props.article.id)}>{props.article.title}</h2>
             <div className="article-meta"><img src="./img/joongang_logo_circle.png"/><h6>{props.article.sourceName}</h6><h6>| {writtenDateStr}</h6><a href={props.article.url} className="goto-source">원문 보기</a></div>
             <p>{props.article.content}</p>
         </div>);
