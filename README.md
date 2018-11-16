@@ -5,6 +5,18 @@ Graduation work in semester 2, 2018.
 Web service that collect News on web and recommend to user based they read.
 
 ## Before run
+
+Set API server's address
+
+`src/microservice/sibylla-view/src/lib/Api.ts`
+
+```typescript
+    // ...
+    private static readonly BASE_URL = "http://sibylla.latera.kr/api"; // It must be your API server address
+    // ...
+```
+
+
 For launch elasticsearch container, 
 ```
 $ grep vm.max_map_count /etc/sysctl.conf
