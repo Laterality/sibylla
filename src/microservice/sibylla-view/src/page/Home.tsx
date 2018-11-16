@@ -165,11 +165,18 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
     }
 
     private handleSearchInputChange = (value: string) => {
+        value = value.trim()
         if (value.length === 0) {
             this.props.history.push(Routes.ROUTE_HOME);
+            if (this.searchTimer != null) {
+                clearTimeout(this.searchTimer);
+                this.searchTimer = null;
+            }
+            return;
         }
         if (this.searchTimer !== null) {
             clearTimeout(this.searchTimer);
+            this.searchTimer = null;
         }
         this.searchTimer = window.setTimeout(() => {
             Api.searchArticle(value)
