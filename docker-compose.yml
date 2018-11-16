@@ -80,6 +80,16 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.12
+  kibana:
+    build: ./src/microservice/kibana
+    volumes:
+      - ./src/microservice/kibana/config/kibana.yml:usr/share/kibana/config/kibana.yml
+    environment:
+      SERVER_NAME: kibana.sibylla.latera.kr
+      ELASTICSEARCH_URL: http://172.18.0.10:9200
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.13
 
 networks:
   sibylla-net:
