@@ -31,7 +31,7 @@ export default class App extends React.Component {
             <MuiThemeProvider theme={theme}>
                 <ReactRouter.BrowserRouter>
                     <ReactRouter.Switch>
-                        <ReactRouter.Route path="/sb" component={Home}/>
+                        <ReactRouter.Route path="/" component={Home}/>
                     </ReactRouter.Switch>
                 </ReactRouter.BrowserRouter>
             </MuiThemeProvider>
