@@ -67,7 +67,7 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
         return (<div id="header">
             {/* 로고 영역 */}
-            <Link to={Routes.ROUTE_HOME}><img src="./img/Logo_with_Typography.svg" alt="logo" className="logo" /></Link>
+            <Link to={Routes.ROUTE_HOME} className="logo"><img src="./img/Logo_with_Typography.svg" alt="logo"/></Link>
             {/* 검색창 영역 */}
             <div className="search-box-container">
                 <img src="./img/baseline-search-24px.svg" alt="search icon"/>
