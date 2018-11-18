@@ -200,6 +200,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                                 img["modDate"]))));
                 }
                 this.setState({searchResults: articles});
+                this.props.history.push(Routes.ROUTE_ARTICLE_CONTENT);
             });
         }, this.SEARCH_PATIENCE);
     }
