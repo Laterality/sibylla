@@ -199,7 +199,7 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                                 img["regDate"],
                                 img["modDate"]))));
                 }
-                this.setState({articles});
+                this.setState({searchResults: articles});
             });
         }, this.SEARCH_PATIENCE);
     }
