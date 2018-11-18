@@ -51,7 +51,8 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                     signedIn={this.state.signedIn}
                     onSignedClick={this.handleSignInClick}
                     onLogoutClick={this.handleLogout}
-                    onSearchInputChange={this.handleSearchInputChange}/>
+                    onSearchInputChange={this.handleSearchInputChange}
+                    onLogoClick={this.handleLogoClick}/>
                 
                 <Switch>
                     <Route 
@@ -203,6 +204,10 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
                 this.props.history.push(Routes.ROUTE_ARTICLES);
             });
         }, this.SEARCH_PATIENCE);
+    }
+
+    private handleLogoClick = () => {
+        this.props.history.push(Routes.ROUTE_HOME);
     }
 }
 

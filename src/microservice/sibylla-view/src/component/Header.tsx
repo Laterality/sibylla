@@ -7,13 +7,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import SwipeableViews from "react-swipeable-views";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
-import Routes from "../lib/Routes";
 
 interface IHeaderComponentProps {
     signedIn: boolean;
     onSignedClick: (email: string, password: string) => void;
     onLogoutClick: () => void;
     onSearchInputChange: (value: string) => void;
+    onLogoClick: () => void;
 }
 
 interface IHeaderComponentState {
@@ -67,7 +67,11 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
         return (<div id="header">
             {/* 로고 영역 */}
-            <Link to={Routes.ROUTE_HOME} className="logo"><img src="./img/Logo_with_Typography.svg" alt="logo"/></Link>
+            <img 
+                src="./img/Logo_with_Typography.svg" 
+                alt="logo" 
+                className="logo"
+                onClick={this.handleLogoClick}/>
             {/* 검색창 영역 */}
             <div className="search-box-container">
                 <img src="./img/baseline-search-24px.svg" alt="search icon"/>
@@ -161,5 +165,9 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
     private handleSearchInput = (evt: any) => {
         this.props.onSearchInputChange(evt.target.value);
+    }
+
+    private handleLogoClick = () => {
+        this.props.onLogoClick();
     }
 }
