@@ -1,11 +1,13 @@
 import * as React from "react";
 import { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import SwipeableViews from "react-swipeable-views";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import Routes from "../lib/Routes";
 
 interface IHeaderComponentProps {
     signedIn: boolean;
@@ -65,7 +67,7 @@ export default class HeaderComponent extends Component<IHeaderComponentProps, IH
 
         return (<div id="header">
             {/* 로고 영역 */}
-            <img src="./img/Logo_with_Typography.svg" alt="logo" className="logo" />
+            <Link to={Routes.ROUTE_HOME}><img src="./img/Logo_with_Typography.svg" alt="logo" className="logo" /></Link>
             {/* 검색창 영역 */}
             <div className="search-box-container">
                 <img src="./img/baseline-search-24px.svg" alt="search icon"/>
