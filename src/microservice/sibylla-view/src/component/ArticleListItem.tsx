@@ -21,7 +21,7 @@ export default class ArticleListItemComponent extends React.Component<IArticleLi
         return (<div className="article-list-item">
             <h2 onClick={() => this.props.onClick(props.article.id)}>{props.article.title}</h2>
             <div className="article-meta"><img src="./img/joongang_logo_circle.png"/><h6>{props.article.sourceName}</h6><h6>| {writtenDateStr}</h6><a href={props.article.url} className="goto-source">원문 보기</a></div>
-            <p>{props.article.content}</p>
+            <p>{props.article.content.slice(0, 250) + "..."}</p>
         </div>);
     }
 }
