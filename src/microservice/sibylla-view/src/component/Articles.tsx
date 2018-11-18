@@ -16,6 +16,12 @@ interface IArticlesComponentState {
     articles: Array<Article>
 }
 
+const style = {
+    width: "60%",
+    marginLeft: "auto",
+    marginRight: "auto",
+};
+
 export default class ArticlesComponent extends React.Component<IArticlesComponentProps, IArticlesComponentState> {
 
     constructor(p: IArticlesComponentProps) {
@@ -28,7 +34,7 @@ export default class ArticlesComponent extends React.Component<IArticlesComponen
     }
 
     public render() {
-        return (<div>
+        return (<div style={style}>
             <ArticleListComponent
                 articles={this.props.articles}
                 onArticleClick={this.props.onArticleClick}

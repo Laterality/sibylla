@@ -181,21 +181,25 @@ class HomePageComponent extends React.Component<IHomePageComponentProps, IHomePa
         this.searchTimer = window.setTimeout(() => {
             Api.searchArticle(value)
             .then((res: AxiosResponse) => {
-                this.props.history.push(Routes.ROUTE_ARTICLES);
-                const aHits: Array<any> = res.data["data"]["hits"];
-                const articles = aHits.map((obj: any) => {
-                    // TODO: get sourceName and article images
-                    const source = obj["_source"];
-                    return new Article(
-                        source["id"],
-                        source["title"],
-                        source["content"],
-                        "",
-                        new Date(source["writtenDate"]),
-                        source["url"],
-                        []);
-                });
-                this.setState({searchResults: articles});
+                const articles = [];
+    
+                for (let a of res.data["data"]) {
+                    articles.push(new Article(
+                        a["id"], 
+                        a["title"],
+                        a["content"],
+                        a["sourceName"],
+                        new Date(a["writtenDate"]),
+                        a["url"],
+                        a["images"].map((img: any) => 
+                            new ArticleImage(
+                                img["id"],
+                                img["articleId"],
+                                img["src"],
+                                img["regDate"],
+                                img["modDate"]))));
+                }
+                this.setState({articles});
             });
         }, this.SEARCH_PATIENCE);
     }
