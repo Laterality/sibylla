@@ -154,7 +154,17 @@ class ArticleApiController {
         val res = service.searchArticle(query).execute()
 
         return if (res.isSuccessful) {
-            ResponseEntity(ResponseDto("ok", "", res.body()?.hits), HttpStatus.OK)
+            val hits = res.body()?.hits
+            val articles = ArrayList<ArticleDto>()
+            if (hits != null) {
+                for (h in hits.hits) {
+                    val article = articleService.selectById(h._source.id)
+                    if (article != null) {
+                        articles.add(article)
+                    }
+                }
+            }
+            ResponseEntity(ResponseDto("ok", "", articles), HttpStatus.OK)
         } else {
             ResponseEntity(ResponseDto("fail", "Search failed", null), HttpStatus.INTERNAL_SERVER_ERROR)
         }
