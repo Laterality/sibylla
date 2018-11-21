@@ -97,6 +97,14 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.14
+  metricbeat:
+    build: ./src/microservice/metricbeat
+    volumes:
+      - ./src/microservice/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup
+      - /:/hostfs
+    command: "-system.hostfs=/hostfs"
+    network_mode: "host"
 
 networks:
   sibylla-net:
