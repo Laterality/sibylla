@@ -1,0 +1,12 @@
+filebeat.inputs:
+
+- type: docker
+  enabled: true
+  containers:
+    stream: all
+    ids: '*'
+
+
+output.elasticsearch:
+  hosts: ["http://172.18.0.10:9200"]
+  index: "filebeat-%{[beat.version]}-%{+yyyy.MM.dd}"

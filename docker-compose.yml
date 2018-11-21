@@ -90,6 +90,13 @@ services:
     networks:
       sibylla-net:
         ipv4_address: 172.18.0.13
+  filebeat:
+    build: ./src/microservice/filebeat
+    volumes:
+      - ./src/microservice/filebeat/config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+    networks:
+      sibylla-net:
+        ipv4_address: 172.18.0.14
 
 networks:
   sibylla-net:
