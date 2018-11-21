@@ -13,4 +13,5 @@ output.elasticsearch:
 
 
 setup.template.enabled: true
+setup.template.name: "filebeat-%{[beat.version]}"
 setup.template.pattern: "filebeat-%{[beat.version]}-*"
