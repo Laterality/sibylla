@@ -103,7 +103,7 @@ services:
       - ./src/microservice/metricbeat/config/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
       - /sys/fs/cgroup:/hostfs/sys/fs/cgroup
       - /:/hostfs
-    command: "-system.hostfs=/hostfs"
+    command: "-system.hostfs=/hostfs --dashboards"
     network_mode: "host"
 
 networks:
