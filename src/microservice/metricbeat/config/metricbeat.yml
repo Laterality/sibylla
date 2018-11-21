@@ -1,4 +1,7 @@
 setup.dashboards.enabled: true
+setup.dashboards.retry.enabled: true
+setup.dashboards.retry.interval: 5s
+setup.dashboards.retry.maximum: 0
 
 output.elasticsearch:
   hosts: ["http://172.18.0.10:9200"]
