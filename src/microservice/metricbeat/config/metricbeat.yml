@@ -1,3 +1,5 @@
+setup.dashboards.enabled: true
+
 output.elasticsearch:
   hosts: ["http://172.18.0.10:9200"]
 setup.kibana:
