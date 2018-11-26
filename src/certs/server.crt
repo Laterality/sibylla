@@ -1,0 +1,62 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 0 (0x0)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: C=KR, ST=Chungnam, L=Cheonan, O=Latera kr, OU=Dev team, CN=latera.kr/emailAddress=bluesky0255@naver.com
+        Validity
+            Not Before: Nov 26 04:53:23 2018 GMT
+            Not After : Nov 26 04:53:23 2019 GMT
+        Subject: C=KR, ST=Chungnam, O=Latera kr, OU=Dev team, CN=latera.kr/emailAddress=bluesky0255@naver.com
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (1024 bit)
+                Modulus:
+                    00:ee:64:7d:2f:b0:ee:39:04:59:97:2f:fa:4e:8d:
+                    d3:84:d2:60:01:8e:3d:2b:86:1f:ea:09:eb:7e:ec:
+                    c1:2c:0a:ef:92:a9:27:cc:8b:60:f8:1f:67:ab:be:
+                    d4:e6:86:a6:f4:43:89:89:00:9c:7d:5b:b5:2d:35:
+                    87:e2:4f:98:0c:b0:22:2e:6e:bd:99:35:72:b3:c3:
+                    7f:a1:42:f9:b7:b5:42:74:c4:88:01:5b:10:9d:5e:
+                    30:50:60:2a:fe:43:df:f3:7a:ba:12:7c:75:e1:e5:
+                    84:de:b5:d3:55:eb:82:f9:c6:98:f0:d6:b3:df:6d:
+                    1b:76:23:fc:d2:5b:9c:c0:97
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                B9:13:16:52:B4:0C:60:42:F8:49:98:EF:7E:DD:AE:38:50:78:97:AC
+            X509v3 Authority Key Identifier: 
+                keyid:7B:83:EB:D9:42:92:B7:1E:6B:DC:01:DB:72:C2:CA:57:1A:3C:F1:34
+
+    Signature Algorithm: sha256WithRSAEncryption
+         4a:2f:71:f4:21:dc:ae:b7:7d:42:46:e8:ec:c5:07:90:e3:d3:
+         e3:c2:1c:0c:6d:64:6e:ec:81:e7:a6:79:cc:81:e4:74:63:f7:
+         a6:80:56:c2:31:1b:31:36:6b:78:06:38:65:cd:17:e5:81:61:
+         59:cb:47:79:6a:3c:06:3a:d6:68:56:6f:7e:f2:44:66:2b:0f:
+         ba:45:60:f0:01:7e:27:c9:45:75:ff:6c:b3:ed:9a:2b:a4:8f:
+         2e:71:97:90:1d:a0:bf:bb:a0:c4:2d:5a:35:16:44:bf:88:23:
+         63:fe:97:88:da:93:b8:94:ae:a3:98:fa:43:56:f8:06:17:c9:
+         08:7f
+-----BEGIN CERTIFICATE-----
+MIIDBzCCAnCgAwIBAgIBADANBgkqhkiG9w0BAQsFADCBkzELMAkGA1UEBhMCS1Ix
+ETAPBgNVBAgMCENodW5nbmFtMRAwDgYDVQQHDAdDaGVvbmFuMRIwEAYDVQQKDAlM
+YXRlcmEga3IxETAPBgNVBAsMCERldiB0ZWFtMRIwEAYDVQQDDAlsYXRlcmEua3Ix
+JDAiBgkqhkiG9w0BCQEWFWJsdWVza3kwMjU1QG5hdmVyLmNvbTAeFw0xODExMjYw
+NDUzMjNaFw0xOTExMjYwNDUzMjNaMIGBMQswCQYDVQQGEwJLUjERMA8GA1UECAwI
+Q2h1bmduYW0xEjAQBgNVBAoMCUxhdGVyYSBrcjERMA8GA1UECwwIRGV2IHRlYW0x
+EjAQBgNVBAMMCWxhdGVyYS5rcjEkMCIGCSqGSIb3DQEJARYVYmx1ZXNreTAyNTVA
+bmF2ZXIuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDuZH0vsO45BFmX
+L/pOjdOE0mABjj0rhh/qCet+7MEsCu+SqSfMi2D4H2ervtTmhqb0Q4mJAJx9W7Ut
+NYfiT5gMsCIubr2ZNXKzw3+hQvm3tUJ0xIgBWxCdXjBQYCr+Q9/zeroSfHXh5YTe
+tdNV64L5xpjw1rPfbRt2I/zSW5zAlwIDAQABo3sweTAJBgNVHRMEAjAAMCwGCWCG
+SAGG+EIBDQQfFh1PcGVuU1NMIEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4E
+FgQUuRMWUrQMYEL4SZjvft2uOFB4l6wwHwYDVR0jBBgwFoAUe4Pr2UKStx5r3AHb
+csLKVxo88TQwDQYJKoZIhvcNAQELBQADgYEASi9x9CHcrrd9Qkbo7MUHkOPT48Ic
+DG1kbuyB56Z5zIHkdGP3poBWwjEbMTZreAY4Zc0X5YFhWctHeWo8BjrWaFZvfvJE
+ZisPukVg8AF+J8lFdf9ss+2aK6SPLnGXkB2gv7ugxC1aNRZEv4gjY/6XiNqTuJSu
+o5j6Q1b4BhfJCH8=
+-----END CERTIFICATE-----
