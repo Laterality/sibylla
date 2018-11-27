@@ -4,8 +4,10 @@ import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
 import com.nimbusds.jose.crypto.RSASSASigner
+import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
+import sun.security.rsa.RSAPublicKeyImpl
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.security.KeyFactory
@@ -36,6 +38,13 @@ object AuthUtil {
         signedJWT.sign(signer)
 
         return signedJWT.serialize()
+    }
+
+    fun verifyToken(pubKeyPath: String, token: String): Boolean {
+        val pubKeyBytes = Files.readAllBytes(Paths.get(pubKeyPath))
+        val verifier = RSASSAVerifier(RSAPublicKeyImpl(pubKeyBytes))
+
+        return SignedJWT.parse(token).verify(verifier)
     }
 
 }
