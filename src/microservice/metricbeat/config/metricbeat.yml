@@ -1,6 +1,6 @@
 setup.dashboards.enabled: true
 setup.dashboards.retry.enabled: true
-setup.dashboards.retry.interval: 5s
+setup.dashboards.retry.interval: 5
 setup.dashboards.retry.maximum: 0
 
 output.elasticsearch:

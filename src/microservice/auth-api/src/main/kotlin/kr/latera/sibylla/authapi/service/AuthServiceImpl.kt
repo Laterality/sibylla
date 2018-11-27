@@ -24,6 +24,9 @@ class AuthServiceImpl : AuthService {
     @Value("\${private-key-path}")
     private lateinit var privKeyPath: String
 
+    @Value("\${public-key-path}")
+    private lateinit var pubKeyPath: String
+
     @Value("\${jwt-issuer}")
     private lateinit var issuer: String
 
@@ -62,5 +65,9 @@ class AuthServiceImpl : AuthService {
         val selectedToken = dao.selectByToken(token) ?: return false
         val affected = dao.delete(selectedToken.id)
         return affected == 1
+    }
+
+    override fun verify(token: String): Boolean {
+        return AuthUtil.verifyToken(pubKeyPath, token)
     }
 }

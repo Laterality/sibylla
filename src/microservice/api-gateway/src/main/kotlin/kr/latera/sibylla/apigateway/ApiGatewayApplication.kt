@@ -1,5 +1,6 @@
 package kr.latera.sibylla.apigateway
 
+import kr.latera.sibylla.apigateway.filter.AuthFilter
 import kr.latera.sibylla.apigateway.filter.LoggingFilter
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -13,6 +14,11 @@ class ApiGatewayApplication {
     @Bean
     fun loggingFilter(): LoggingFilter {
         return LoggingFilter()
+    }
+
+    @Bean
+    fun authFilter(): AuthFilter {
+        return AuthFilter()
     }
 
 }
