@@ -21,6 +21,10 @@ class AuthFilter: ZuulFilter() {
         val ctx = RequestContext.getCurrentContext()
 
         val authHeader = ctx.request.getHeader("Authorization")
+        if (authHeader == null) {
+            log.info("Auth not included")
+            return null
+        }
 
         val retrofit = Retrofit.Builder()
                 .baseUrl("$authUrl/")
