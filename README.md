@@ -17,7 +17,7 @@ Set API server's address
 ```
 
 
-For launch elasticsearch container, 
+For launch elasticsearch container,
 ```
 $ grep vm.max_map_count /etc/sysctl.conf
 vm.max_map_count=262144
@@ -26,6 +26,11 @@ vm.max_map_count=262144
 To apply the setting on a live system type: `sysctl -w vm.max_map_count=262144`
 
 Please see [link](https://www.elastic.co/guide/en/elasticsearch/reference/6.4/docker.html) for detail.
+
+Also metricbeat container needs permission to access host docker
+```
+$ setfacl -m u:1000:rw /var/run/docker.sock
+```
 
 ## Build docker image
 
