@@ -6,6 +6,8 @@ import kr.latera.sibylla.userapi.dto.UserInsertDto
 import kr.latera.sibylla.userapi.service.UserService
 import kr.latera.sibylla.userapi.util.PasswordUtil
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,11 +23,11 @@ class UserAPIController {
     private lateinit var userService: UserService
 
     @PostMapping("/register")
-    fun registerUser(@RequestBody body: UserAPIRequestDto): ResponseDto<Any?> {
+    fun registerUser(@RequestBody body: UserAPIRequestDto): ResponseEntity<ResponseDto<Any?>> {
         System.out.println(body)
         if (body.email == null ||
                 body.password == null) {
-            return ResponseDto("fail", "email or password is not included", null)
+            return ResponseEntity(ResponseDto("fail", "email or password is not included", null), HttpStatus.BAD_REQUEST)
         }
         val salt = PasswordUtil.makeSalt()
         val insertedId = userService.register(UserInsertDto(body.email, PasswordUtil.encrypt(body.password, salt), salt))
@@ -33,12 +35,12 @@ class UserAPIController {
         val resMap = HashMap<String, Any>()
 
         if (user == null) {
-            return ResponseDto("error", "user isn't created", null)
+            return ResponseEntity(ResponseDto("error", "user isn't created", null), HttpStatus.INTERNAL_SERVER_ERROR)
         }
 
         resMap["id"] = user.id
         resMap["email"] = user.email
 
-        return ResponseDto<Map<String, Any>>("ok", "", resMap)
+        return ResponseEntity(ResponseDto<Map<String, Any>>("ok", "", resMap), HttpStatus.OK)
     }
 }

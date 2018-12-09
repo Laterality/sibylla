@@ -44,26 +44,26 @@ class ArticleApiController {
     }
 
     @GetMapping("/by-id/{id}")
-    fun retrieveArticle(@PathVariable("id") id: Long): ArticleDto? {
-        return articleService.selectById(id)
+    fun retrieveArticle(@PathVariable("id") id: Long): ResponseEntity<ArticleDto?> {
+        return ResponseEntity(articleService.selectById(id), HttpStatus.OK)
     }
 
     @GetMapping("/by-ids")
-    fun retrieveArticles(@RequestParam("ids") ids: String): ResponseDto<List<ArticleDto>> {
+    fun retrieveArticles(@RequestParam("ids") ids: String): ResponseEntity<ResponseDto<List<ArticleDto>>> {
         val splitted = ids.split(",")
         val articles = ArrayList<ArticleDto>()
 
         for (str in splitted) {
             val article = articleService.selectById(str.toLong()) ?:
-                    return ResponseDto("fail", "Invalid article id: $str", null)
+                    return ResponseEntity(ResponseDto("fail", "Invalid article id: $str", null), HttpStatus.BAD_REQUEST)
             articles.add(article)
         }
 
-        return ResponseDto("ok", "", articles)
+        return ResponseEntity(ResponseDto("ok", "", articles), HttpStatus.OK)
     }
 
     @GetMapping("/list")
-    fun listArticle(@RequestParam("limit") limit: Int?, @RequestParam("after") after: Long?, response: HttpServletResponse): Map<String, Any> {
+    fun listArticle(@RequestParam("limit") limit: Int?, @RequestParam("after") after: Long?, response: HttpServletResponse): ResponseEntity<Map<String, Any>> {
 
         val articles = if (after == null) {
             articleService.selectArticles(limit ?: 20)
@@ -76,14 +76,15 @@ class ArticleApiController {
 
         response.setHeader("Access-Control-Allow-Origin", "*")
 
-        return resMap
+        return ResponseEntity(resMap, HttpStatus.OK)
     }
 
     @GetMapping("/recommends")
-    fun recommendArticle(request: HttpServletRequest): ResponseDto<Any> {
+    fun recommendArticle(request: HttpServletRequest): ResponseEntity<ResponseDto<Any>> {
         // get user id
         val token = request.getHeader("Authorization").split(" ")[1]
-        val authTokenDto = authTokenService.getByToken(token) ?: return ResponseDto("fail", "Invalid auth token", null)
+        val authTokenDto = authTokenService.getByToken(token) ?:
+            return ResponseEntity(ResponseDto("fail", "Invalid auth token", null), HttpStatus.UNAUTHORIZED)
         // get read info
         val reads = readService.getByUserId(authTokenDto.userId, 3)
         // get article similarity
@@ -117,25 +118,25 @@ class ArticleApiController {
         // and return
         val sorted = list.stream().sorted(ArticleSimilarityPair::compareTo).toList()
 
-        return ResponseDto("ok",
+        return ResponseEntity(ResponseDto("ok",
                 "",
                 if (sorted.size > 1) {
                 sorted.subList(0,
                         if (sorted.size > 100 ) { 100 } else { sorted.size -1 }) } else {
                     ArrayList()
-                })
+                }), HttpStatus.OK)
     }
 
     @GetMapping("/read")
     fun registerRead(@RequestParam("articleId") articleId: Long,
-                     request: HttpServletRequest): ResponseDto<Any> {
+                     request: HttpServletRequest): ResponseEntity<ResponseDto<Any>> {
         val token = request.getHeader("Authorization")?.split(" ")?.get(1) ?:
-            return ResponseDto("fail", "Invalid authorization header", null)
+            return ResponseEntity(ResponseDto("fail", "Invalid authorization header", null), HttpStatus.UNAUTHORIZED)
         val auth = authTokenService.getByToken(token) ?:
-            return ResponseDto("fail", "Authorization info doesn't exist", null)
+            return ResponseEntity(ResponseDto("fail", "Authorization info doesn't exist", null), HttpStatus.UNAUTHORIZED)
         readService.add(ReadInsertDto(articleId, auth.userId))
 
-        return ResponseDto("ok","", null)
+        return ResponseEntity(ResponseDto("ok","", null), HttpStatus.OK)
     }
 
     @GetMapping("/search")

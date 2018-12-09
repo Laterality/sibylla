@@ -22,30 +22,30 @@ class AuthAPIController {
 
     @CrossOrigin
     @PostMapping("/login")
-    fun login(@RequestBody body: LoginRequestDto, request: HttpServletRequest): ResponseDto<Any> {
+    fun login(@RequestBody body: LoginRequestDto, request: HttpServletRequest): ResponseEntity<ResponseDto<Any>> {
         val token = authService.login(body.email, body.password, request.getHeader("Origin"))
-                ?: return ResponseDto("fail", "email or password is incorrect", null)
+                ?: return ResponseEntity(ResponseDto("fail", "email or password is incorrect", null), HttpStatus.BAD_REQUEST)
         val resMap = HashMap<String, Any>()
         resMap["token"] = token
-        return ResponseDto<Map<String, Any>>("ok", "", resMap)
+        return ResponseEntity(ResponseDto<Map<String, Any>>("ok", "", resMap), HttpStatus.OK)
     }
 
     @CrossOrigin
     @GetMapping("/logout")
-    fun logout(request: HttpServletRequest): ResponseDto<Any> {
+    fun logout(request: HttpServletRequest): ResponseEntity<ResponseDto<Any>> {
         val authHeader = request.getHeader("Authorization")
-                ?: return ResponseDto("fail", "Authorization header not included", null)
+                ?: return ResponseEntity(ResponseDto("fail", "Authorization header not included", null), HttpStatus.UNAUTHORIZED)
 
         return try {
             val done = authService.logout(authHeader.split(" ")[1])
             if (done) {
-                ResponseDto("ok","" , null)
+                ResponseEntity(ResponseDto("ok","" , null), HttpStatus.OK)
             } else {
-                ResponseDto("fail", "logout failed", null)
+                ResponseEntity(ResponseDto("fail", "logout failed", null), HttpStatus.INTERNAL_SERVER_ERROR)
             }
 
         } catch (e: Exception) {
-            ResponseDto("error", "logout failed, may be server fault", null)
+            ResponseEntity(ResponseDto("error", "logout failed, may be server fault", null), HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
